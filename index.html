@@ -1263,18 +1263,18 @@
             display: none;
         }
 
-        .case-card {
+                .case-card {
             flex: 0 0 auto;
             width: 280px;
             scroll-snap-align: start;
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 20px;
-            overflow: hidden;
             transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
-            height: 480px;
+            height: auto;           /* let content decide height */
+            min-height: 450px;       /* optional: keep a minimum size */
         }
 
         @media (min-width: 768px) {
@@ -1284,12 +1284,12 @@
             }
         }
 
-        @media (max-width: 767px) {
-            .case-card {
-                height: 450px;
+                    @media (max-width: 767px) {
+                .case-card {
+                    height: auto;        /* override the old fixed height */
+                    /* you can keep min-height: 450px from above, it already applies */
+                }
             }
-        }
-
         .case-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 40px var(--card-shadow);
@@ -1303,6 +1303,8 @@
             justify-content: center;
             color: white;
             font-size: 2.5rem;
+            border-radius: 20px 20px 0 0;   /* round only top corners */
+            overflow: hidden;                /* clip icon to those corners */
         }
 
         /* FIXED ISSUE 7: Ensure all case study icon backgrounds are consistent */
@@ -1940,7 +1942,7 @@
         padding-right: 1rem;
         gap: 0.75rem;
         scroll-behavior: smooth;
-        touch-action: pan-x;
+        touch-action: pan-x pan-y;
         -ms-overflow-style: none;
         scrollbar-width: none;
     }
@@ -2505,10 +2507,10 @@
                             <i class="fas fa-paper-plane"></i>
                             Get in Touch
                         </a>
-                        <a href="YOUR_RESUME_FILE.pdf" class="btn btn-outline" download>
-                            <i class="fas fa-download"></i>
-                            Download Resume
+                        <a href="Ayomide_Ayodele_Resume.pdf" class="btn btn-outline" target="_blank" rel="noopener noreferrer">
+                        <i class="fas fa-file-alt"></i> View Resume
                         </a>
+
                     </div>
                 </div>
                 
@@ -2564,7 +2566,7 @@
                                 <i class="fas fa-graduation-cap"></i>
                                 <div>
                                     <h4>Lagos State University</h4>
-                                    <p>Bachelor's of Science in Economics</p>
+                                    <p>Bachelor's of Science in Economics (In view)</p>
                                 </div>
                             </li>
                             <li class="education-item">
@@ -2953,15 +2955,11 @@
                     <a href="https://www.linkedin.com/in/ayomideayodele/" target="_blank" aria-label="LinkedIn">
                         <i class="fab fa-linkedin"></i>
                     </a>
-                    <a href="https://x.com/mide_dele" target="_blank" aria-label="Twitter">
-                        <i class="fab fa-twitter"></i>
-                    </a>
+                    
                     <a href="https://github.com/ayomide-ayodele" target="_blank" aria-label="GitHub">
                         <i class="fab fa-github"></i>
                     </a>
-                    <a href="https://www.instagram.com/midel.io?igsh=Z3FnYW9yZTI2eXN4" target="_blank" aria-label="Instagram">
-                        <i class="fab fa-instagram"></i>
-                    </a>
+                    
                 </div>
                 
                 <div class="copyright">
@@ -3259,6 +3257,9 @@
                     'Product Strategist',
                     'Product Thinker',
                     'Digital Product Specialist',
+                    'Product Operations Manager',
+                    'Technical Product Manager',
+                    'Full-Stack Product Manager',
                     'AI & Automation Enthusiast'
                 ];
                 this.currentIndex = 0;
@@ -3542,69 +3543,43 @@
         }
 
         class HorizontalScrollManager {
-            constructor() {
-                this.scrollContainers = [
-                    { container: '.experience-scroll', prev: '.scroll-btn.prev', next: '.scroll-btn.next' },
-                    { container: '.cases-scroll', prev: '.scroll-btn.prev', next: '.scroll-btn.next' },
-                    { container: '.skills-scroll', prev: '.scroll-btn.prev', next: '.scroll-btn.next' }
-                ];
-                this.init();
-            }
+    constructor() {
+        this.scrollContainers = [
+            { container: '.experience-scroll', prev: '.scroll-btn.prev', next: '.scroll-btn.next' },
+            { container: '.cases-scroll', prev: '.scroll-btn.prev', next: '.scroll-btn.next' },
+            { container: '.skills-scroll', prev: '.scroll-btn.prev', next: '.scroll-btn.next' }
+        ];
+        this.init();
+    }
+    
+    init() {
+        this.scrollContainers.forEach(config => {
+            const containers = document.querySelectorAll(config.container);
+            const prevButtons = document.querySelectorAll(config.prev);
+            const nextButtons = document.querySelectorAll(config.next);
             
-            init() {
-                this.scrollContainers.forEach(config => {
-                    const containers = document.querySelectorAll(config.container);
-                    const prevButtons = document.querySelectorAll(config.prev);
-                    const nextButtons = document.querySelectorAll(config.next);
-                    containers.forEach((container, index) => {
-                        const prevBtn = prevButtons[index];
-                        const nextBtn = nextButtons[index];
-                        if (prevBtn) {
-                            prevBtn.addEventListener('click', () => {
-                                this.scrollContainer(container, -container.offsetWidth * 0.8);
-                            });
-                        }
-                        if (nextBtn) {
-                            nextBtn.addEventListener('click', () => {
-                                this.scrollContainer(container, container.offsetWidth * 0.8);
-                            });
-                        }
-                        let startX, scrollLeft, isDown = false;
-                        container.addEventListener('touchstart', (e) => {
-                            isDown = true;
-                            startX = e.touches[0].pageX - container.offsetLeft;
-                            scrollLeft = container.scrollLeft;
-                        });
-                        container.addEventListener('touchmove', (e) => {
-                            if (!isDown) return;
-                            e.preventDefault();
-                            const x = e.touches[0].pageX - container.offsetLeft;
-                            const walk = (x - startX) * 2;
-                            container.scrollLeft = scrollLeft - walk;
-                        });
-                        container.addEventListener('touchend', () => isDown = false);
-                        container.addEventListener('mousedown', (e) => {
-                            isDown = true;
-                            startX = e.pageX - container.offsetLeft;
-                            scrollLeft = container.scrollLeft;
-                        });
-                        container.addEventListener('mousemove', (e) => {
-                            if (!isDown) return;
-                            e.preventDefault();
-                            const x = e.pageX - container.offsetLeft;
-                            const walk = (x - startX) * 2;
-                            container.scrollLeft = scrollLeft - walk;
-                        });
-                        container.addEventListener('mouseup', () => isDown = false);
-                        container.addEventListener('mouseleave', () => isDown = false);
+            containers.forEach((container, index) => {
+                const prevBtn = prevButtons[index];
+                const nextBtn = nextButtons[index];
+                
+                // Scroll buttons
+                if (prevBtn) {
+                    prevBtn.addEventListener('click', () => {
+                        container.scrollBy({ left: -container.offsetWidth * 0.8, behavior: 'smooth' });
                     });
-                });
-            }
-            
-            scrollContainer(container, amount) {
-                container.scrollBy({ left: amount, behavior: 'smooth' });
-            }
-        }
+                }
+                if (nextBtn) {
+                    nextBtn.addEventListener('click', () => {
+                        container.scrollBy({ left: container.offsetWidth * 0.8, behavior: 'smooth' });
+                    });
+                }
+                
+                // No custom touch drag – native scrolling is already enabled via CSS
+                // (touch-action: pan-x pan-y; -webkit-overflow-scrolling: touch;)
+            });
+        });
+    }
+}
 
         class ContactFormHandler {
     constructor() {
