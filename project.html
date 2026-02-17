@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Side Projects & Product Experiments | Product Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <style>
+        /* Importing fonts directly in CSS to keep single file */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap');
+        
+        :root {
+            /* Light theme variables */
+            --bg-primary: #f8f9fa;
+            --bg-secondary: #ffffff;
+            --bg-card: #ffffff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #4a5568;
+            --text-muted: #718096;
+            --accent: #4f46e5;
+            --accent-light: #e0e7ff;
+            --border: #e2e8f0;
+            --shadow: rgba(0, 0, 0, 0.04);
+            --shadow-hover: rgba(0, 0, 0, 0.08);
+            --radius: 12px;
+            --transition: all 0.25s ease;
+        }
+
+        [data-theme="dark"] {
+            /* Dark theme variables */
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --accent: #818cf8;
+            --accent-light: #312e81;
+            --border: #334155;
+            --shadow: rgba(0, 0, 0, 0.2);
+            --shadow-hover: rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            transition: var(--transition);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        a:hover {
+            color: var(--text-primary);
+        }
+
+        /* Header & Navigation */
+        .site-header {
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background-color: var(--bg-primary);
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .back-link {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.5rem 0;
+            transition: var(--transition);
+        }
+
+        .back-link:hover {
+            color: var(--accent);
+            transform: translateX(-2px);
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .lagos-clock {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--accent-light);
+            color: var(--accent);
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 3rem 2rem;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .intro-card {
+            background-color: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            max-width: 700px;
+            width: 100%;
+            margin: 0 auto 4rem;
+            box-shadow: 0 4px 12px var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .intro-text {
+            font-size: 1.125rem;
+            line-height: 1.7;
+            text-align: left;
+        }
+
+        /* Projects Section */
+        .projects-section {
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .projects-scroll-container {
+            position: relative;
+        }
+
+        .projects-grid {
+            display: flex;
+            gap: 2rem;
+            padding: 1rem 0 2rem;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+        }
+
+        .projects-grid::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+
+        .project-card {
+            flex: 0 0 auto;
+            width: 320px;
+            background-color: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: 0 4px 12px var(--shadow);
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px var(--shadow-hover);
+        }
+
+        .project-name {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .project-description {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            flex-grow: 1;
+        }
+
+        .view-project-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--accent);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.9375rem;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .view-project-btn:hover {
+            background-color: var(--text-primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Scroll indicators for mobile */
+        .scroll-hint {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: var(--bg-card);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            box-shadow: 0 2px 8px var(--shadow);
+            z-index: 10;
+        }
+
+        /* Footer */
+        .site-footer {
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.9375rem;
+            background-color: var(--bg-primary);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .projects-grid {
+                padding-bottom: 3rem;
+            }
+            
+            .scroll-hint {
+                display: flex;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .site-header {
+                padding: 1rem;
+            }
+            
+            main {
+                padding: 2rem 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .intro-card {
+                padding: 1.5rem;
+            }
+            
+            .intro-text {
+                font-size: 1rem;
+            }
+            
+            .project-card {
+                width: 280px;
+                padding: 1.5rem;
+            }
+            
+            .header-controls {
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .lagos-clock {
+                display: none;
+            }
+            
+            .project-card {
+                width: 260px;
+            }
+        }
+
+        /* Desktop layout - 3 columns when enough space */
+        @media (min-width: 1200px) {
+            .projects-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                overflow-x: visible;
+                gap: 2.5rem;
+            }
+            
+            .project-card {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body data-theme="light">
+    <header class="site-header">
+        <a href="index.html" class="back-link">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 4L6 8L10 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Back to main portfolio
+        </a>
+        
+        <div class="header-controls">
+            <div class="lagos-clock" id="lagosClock">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="7" cy="7" r="6.5" stroke="currentColor"/>
+                    <path d="M7 3V7L9.5 8.5" stroke="currentColor" stroke-linecap="round"/>
+                </svg>
+                <span id="clock">Lagos: 00:00</span>
+            </div>
+            
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 2C10 2 13 4 13 10C13 16 10 18 10 18C5.5 18 2 14.5 2 10C2 5.5 5.5 2 10 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <div class="page-title">
+            <h1>Side Projects & Product Experiments</h1>
+        </div>
+        
+        <div class="intro-card">
+            <p class="intro-text">
+               Independent product experiments designed to identify user problems and rapidly test solutions. I validated each concept by building prototypes and collecting qualitative feedback directly from potential users, using those insights to drive iteration and focus on the core product vision.
+            </p>
+        </div>
+        
+        <section class="projects-section">
+            <div class="projects-scroll-container">
+                <div class="projects-grid" id="projectsGrid">
+                    <!-- Project 1 -->
+                    <article class="project-card">
+                        <h3 class="project-name">PulseCheck</h3>
+                        <p class="project-description">
+                            A lightweight tool for remote teams to track sentiment and identify burnout signals early, maintaining emotional connectivity without invading privacy.
+                        </p>
+                        <a href="pulsecheck.html" target="_blank" class="view-project-btn">
+                            View project
+                        </a>
+                    </article>
+                    
+                    <!-- Project 2 -->
+                    <article class="project-card">
+                        <h3 class="project-name">Finance Study App</h3>
+                        <p class="project-description">
+                            Interactive educational tool that simplifies personal finance through progressive scenarios, building confidence in recent graduates.
+                        </p>
+                        <a href="https://placeholder-financeapp-url.com" target="_blank" class="view-project-btn">
+                            View project
+                        </a>
+                    </article>
+                    
+                    <!-- Project 3 -->
+                    <article class="project-card">
+                        <h3 class="project-name">Local Discovery</h3>
+                        <p class="project-description">
+                            Community-verified recommendation engine for finding authentic local businesses and neighborhood resources.
+                        </p>
+                        <a href="https://placeholder-localdiscovery-url.com" target="_blank" class="view-project-btn">
+                            View project
+                        </a>
+                    </article>
+                </div>
+                
+                <div class="scroll-hint" id="scrollHint">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>Ayomide Ayodele - Product Portfolio</p>
+    </footer>
+
+    <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        // Check for saved theme or prefer-color-scheme
+        const savedTheme = localStorage.getItem('portfolio-theme') || 
+                          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        
+        // Apply saved theme
+        body.setAttribute('data-theme', savedTheme);
+        
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('portfolio-theme', newTheme);
+            
+            // Update toggle icon
+            updateThemeIcon(newTheme);
+        });
+        
+        function updateThemeIcon(theme) {
+            const icon = themeToggle.querySelector('svg');
+            if (theme === 'light') {
+                icon.innerHTML = `<path d="M10 2C10 2 13 4 13 10C13 16 10 18 10 18C5.5 18 2 14.5 2 10C2 5.5 5.5 2 10 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>`;
+            } else {
+                icon.innerHTML = `<path d="M10 15C12.76 15 15 12.76 15 10C15 7.24 12.76 5 10 5C7.24 5 5 7.24 5 10C5 12.76 7.24 15 10 15Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                  <path d="M10 1V2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                  <path d="M10 18V19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                  <path d="M1 10H2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                  <path d="M18 10H19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                  <path d="M15.07 3.07L15.78 3.78" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                  <path d="M4.22 13.22L4.93 13.93" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                  <path d="M4.93 4.93L4.22 5.64" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                  <path d="M15.78 15.78L15.07 16.49" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>`;
+            }
+        }
+        
+        // Initialize theme icon
+        updateThemeIcon(savedTheme);
+        
+        // Lagos Clock Functionality
+        function updateLagosTime() {
+            const lagosTime = new Date().toLocaleTimeString('en-US', {
+                timeZone: 'Africa/Lagos',
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            document.getElementById('clock').textContent = `Lagos: ${lagosTime}`;
+        }
+        
+        // Update time immediately and then every minute
+        updateLagosTime();
+        setInterval(updateLagosTime, 60000);
+        
+        // Horizontal scrolling for mobile
+        const projectsGrid = document.getElementById('projectsGrid');
+        const scrollHint = document.getElementById('scrollHint');
+        
+        function updateScrollHint() {
+            if (projectsGrid.scrollWidth > projectsGrid.clientWidth) {
+                scrollHint.style.display = 'flex';
+                
+                // Hide hint after user starts scrolling
+                let scrollTimeout;
+                projectsGrid.addEventListener('scroll', () => {
+                    scrollHint.style.opacity = '0';
+                    clearTimeout(scrollTimeout);
+                    
+                    scrollTimeout = setTimeout(() => {
+                        scrollHint.style.opacity = '1';
+                    }, 3000);
+                });
+            } else {
+                scrollHint.style.display = 'none';
+            }
+        }
+        
+        // Initialize and update on resize
+        updateScrollHint();
+        window.addEventListener('resize', updateScrollHint);
+        
+        // Auto-scroll hint animation
+        function animateScrollHint() {
+            if (scrollHint.style.display === 'flex') {
+                scrollHint.style.animation = 'pulse 2s infinite';
+            }
+        }
+        
+        // Add CSS animation for pulse effect
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0%, 100% { transform: translateY(-50%) translateX(0); opacity: 1; }
+                50% { transform: translateY(-50%) translateX(4px); opacity: 0.7; }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        animateScrollHint();
+        
+        // Smooth scrolling for the hint button
+        scrollHint.addEventListener('click', () => {
+            projectsGrid.scrollBy({
+                left: 300,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Card hover effects enhancement
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.zIndex = '10';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.zIndex = '1';
+            });
+        });
+        
+        // Touch device detection for better scrolling
+        let isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints;
+        
+        if (isTouchDevice) {
+            projectsGrid.style.cursor = 'grab';
+            
+            let isDragging = false;
+            let startX, scrollLeft;
+            
+            projectsGrid.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                projectsGrid.style.cursor = 'grabbing';
+                startX = e.pageX - projectsGrid.offsetLeft;
+                scrollLeft = projectsGrid.scrollLeft;
+            });
+            
+            projectsGrid.addEventListener('mouseleave', () => {
+                isDragging = false;
+                projectsGrid.style.cursor = 'grab';
+            });
+            
+            projectsGrid.addEventListener('mouseup', () => {
+                isDragging = false;
+                projectsGrid.style.cursor = 'grab';
+            });
+            
+            projectsGrid.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                e.preventDefault();
+                const x = e.pageX - projectsGrid.offsetLeft;
+                const walk = (x - startX) * 2;
+                projectsGrid.scrollLeft = scrollLeft - walk;
+            });
+        }
+    </script>
+</body>
+</html>
