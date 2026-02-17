@@ -1421,58 +1421,8 @@
             });
         })();
 
-        // ============================================
-// IMPROVED MOBILE TOUCH SCROLLING FOR PROJECTS
-// ============================================
-(function() {
-    if ('ontouchstart' in window) {
-        const projectsGrids = document.querySelectorAll('.projects-grid');
+       
         
-        projectsGrids.forEach(grid => {
-            let startX, startY, scrollLeft, isHorizontalDrag;
-            const threshold = 5; // minimum movement to determine direction
-            
-            grid.addEventListener('touchstart', (e) => {
-                const touch = e.touches[0];
-                startX = touch.pageX;
-                startY = touch.pageY;
-                scrollLeft = grid.scrollLeft;
-                isHorizontalDrag = null; // undetermined yet
-            }, { passive: true });
-            
-            grid.addEventListener('touchmove', (e) => {
-                if (startX === undefined) return; // no touchstart?
-                
-                const touch = e.touches[0];
-                const deltaX = touch.pageX - startX;
-                const deltaY = touch.pageY - startY;
-                
-                // Determine direction if not already decided
-                if (isHorizontalDrag === null) {
-                    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > threshold) {
-                        isHorizontalDrag = true;
-                    } else if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > threshold) {
-                        isHorizontalDrag = false;
-                    }
-                    // If movement is still under threshold, keep undetermined
-                }
-                
-                // If horizontal drag is confirmed, prevent default and scroll
-                if (isHorizontalDrag) {
-                    e.preventDefault();
-                    grid.scrollLeft = scrollLeft - deltaX;
-                }
-                // Otherwise, do nothing – let the browser handle vertical scroll
-                
-            }, { passive: false }); // passive: false needed to allow preventDefault
-            
-            grid.addEventListener('touchend', () => {
-                startX = startY = undefined;
-                isHorizontalDrag = null;
-            });
-        });
-    }
-)();
     </script>
 </body>
 </html>
