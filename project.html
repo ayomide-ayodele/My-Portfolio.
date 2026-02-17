@@ -3,43 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Side Projects & Product Experiments | Product Portfolio</title>
+    <title>Projects & Experiments | Ayomide Ayodele Portfolio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <style>
-        /* Importing fonts directly in CSS to keep single file */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap');
+        /* Importing technical fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap');
         
         :root {
-            /* Light theme variables */
-            --bg-primary: #f8f9fa;
-            --bg-secondary: #ffffff;
-            --bg-card: #ffffff;
-            --text-primary: #1a1a1a;
-            --text-secondary: #4a5568;
-            --text-muted: #718096;
-            --accent: #4f46e5;
-            --accent-light: #e0e7ff;
-            --border: #e2e8f0;
-            --shadow: rgba(0, 0, 0, 0.04);
-            --shadow-hover: rgba(0, 0, 0, 0.08);
-            --radius: 12px;
-            --transition: all 0.25s ease;
-        }
-
-        [data-theme="dark"] {
-            /* Dark theme variables */
-            --bg-primary: #0f172a;
-            --bg-secondary: #1e293b;
-            --bg-card: #1e293b;
-            --text-primary: #f1f5f9;
-            --text-secondary: #cbd5e1;
-            --text-muted: #94a3b8;
-            --accent: #818cf8;
-            --accent-light: #312e81;
-            --border: #334155;
-            --shadow: rgba(0, 0, 0, 0.2);
-            --shadow-hover: rgba(0, 0, 0, 0.3);
+            /* Updated blue-toned color scheme */
+            --bg-primary: #0D1A2B;
+            --bg-secondary: rgba(25, 40, 65, 0.7);
+            --bg-card: rgba(20, 30, 48, 0.85);
+            --text-primary: #FFFFFF;
+            --text-secondary: #B8D0F5;
+            --text-muted: #6B8BB9;
+            --accent: #00CEC8;
+            --accent-light: #A0FFFA;
+            --accent-glow: rgba(0, 206, 200, 0.2);
+            --border: rgba(42, 68, 112, 0.6);
+            --shadow: rgba(0, 0, 0, 0.35);
+            --shadow-hover: rgba(0, 206, 200, 0.25);
+            --radius: 14px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --section-spacing: 4rem;
         }
 
         * {
@@ -53,40 +40,67 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'JetBrains Mono', monospace;
             background-color: var(--bg-primary);
             color: var(--text-primary);
-            line-height: 1.5;
-            transition: var(--transition);
+            line-height: 1.6;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            overflow-x: hidden;
         }
 
-        h1, h2, h3 {
+        h1, h2, h3, h4 {
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 600;
             line-height: 1.2;
+            letter-spacing: -0.02em;
         }
 
         h1 {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             margin-bottom: 1rem;
+            background: linear-gradient(135deg, #FFFFFF 0%, #A0FFFA 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         h2 {
-            font-size: 1.75rem;
-            margin-bottom: 0.75rem;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-light);
+            position: relative;
+            display: inline-block;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-light));
+            border-radius: 2px;
         }
 
         h3 {
-            font-size: 1.25rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.4rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
         }
 
         p {
             color: var(--text-secondary);
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        strong {
+            color: var(--text-primary);
+            font-weight: 600;
         }
 
         a {
@@ -96,7 +110,18 @@
         }
 
         a:hover {
-            color: var(--text-primary);
+            color: var(--accent-light);
+        }
+
+        /* Plexus Canvas Background */
+        #plexus-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
         }
 
         /* Header & Navigation */
@@ -107,24 +132,40 @@
             align-items: center;
             position: sticky;
             top: 0;
-            background-color: var(--bg-primary);
+            background-color: rgba(13, 26, 43, 0.9);
             z-index: 100;
             border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(12px);
         }
 
+        /* Responsive Back Link */
         .back-link {
-            font-size: 0.875rem;
-            color: var(--text-muted);
             display: inline-flex;
             align-items: center;
-            gap: 0.375rem;
-            padding: 0.5rem 0;
+            gap: 0.5rem;
+            padding: 0.625rem 1rem;
             transition: var(--transition);
+            font-family: 'IBM Plex Mono', monospace;
+            color: var(--text-muted);
+            border-radius: 8px;
+            background: rgba(20, 30, 48, 0.6);
+            border: 1px solid transparent;
         }
 
         .back-link:hover {
             color: var(--accent);
-            transform: translateX(-2px);
+            background: rgba(0, 206, 200, 0.1);
+            border-color: var(--accent);
+            transform: translateX(-3px);
+        }
+
+        .back-link .text {
+            display: none;
+        }
+
+        .back-link .icon {
+            font-size: 1.4rem;
+            font-weight: 600;
         }
 
         .header-controls {
@@ -133,32 +174,82 @@
             gap: 1.5rem;
         }
 
-        .lagos-clock {
+        /* Multi-City Clock Dropdown */
+        .city-clock-container {
+            position: relative;
+        }
+
+        .city-clock {
             font-size: 0.875rem;
             color: var(--text-muted);
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.625rem;
             white-space: nowrap;
-        }
-
-        .theme-toggle {
-            background: none;
-            border: none;
-            color: var(--text-muted);
+            font-family: 'IBM Plex Mono', monospace;
             cursor: pointer;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
+            padding: 0.625rem 1rem;
+            border-radius: 8px;
+            background: rgba(20, 30, 48, 0.6);
+            border: 1px solid var(--border);
             transition: var(--transition);
         }
 
-        .theme-toggle:hover {
-            background-color: var(--accent-light);
+        .city-clock:hover {
+            border-color: var(--accent);
+            color: var(--text-primary);
+            background: rgba(20, 30, 48, 0.8);
+        }
+
+        .city-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 0.5rem;
+            background: rgba(20, 30, 48, 0.98);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--accent);
+            border-radius: var(--radius);
+            min-width: 220px;
+            display: none;
+            z-index: 200;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .city-dropdown.show {
+            display: block;
+        }
+
+        .city-option {
+            padding: 0.875rem 1.25rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+            border-bottom: 1px solid rgba(42, 68, 112, 0.3);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .city-option:last-child {
+            border-bottom: none;
+        }
+
+        .city-option:hover {
+            background-color: rgba(0, 206, 200, 0.15);
+            color: var(--accent-light);
+        }
+
+        .city-option.active {
             color: var(--accent);
+            background-color: rgba(0, 206, 200, 0.1);
+            font-weight: 500;
+        }
+
+        .city-flag {
+            font-size: 1.1rem;
         }
 
         /* Main Content */
@@ -168,36 +259,150 @@
             flex-direction: column;
             align-items: center;
             padding: 3rem 2rem;
+            position: relative;
+            z-index: 1;
         }
 
         .page-title {
             text-align: center;
-            margin-bottom: 2.5rem;
+            margin-bottom: 3rem;
+            width: 100%;
         }
 
-        .intro-card {
-            background-color: var(--bg-card);
-            border-radius: var(--radius);
-            padding: 2.5rem;
-            max-width: 700px;
+        /* Hero Text Animation */
+        .hero-title-container {
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-title {
+            font-size: clamp(2.2rem, 5vw, 3.8rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #FFFFFF 0%, #A0FFFA 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .typewriter-cursor {
+            display: inline-block;
+            width: 4px;
+            height: 1.3em;
+            background-color: var(--accent);
+            margin-left: 3px;
+            vertical-align: middle;
+            animation: blink 1.2s infinite;
+            border-radius: 1px;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* Hero Card with Subtle Glow */
+        .hero-card-container {
             width: 100%;
-            margin: 0 auto 4rem;
-            box-shadow: 0 4px 12px var(--shadow);
-            border: 1px solid var(--border);
+            max-width: 800px;
+            margin: 0 auto var(--section-spacing);
+            position: relative;
+        }
+
+        .hero-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 3rem;
+            box-shadow: 
+                0 12px 40px var(--shadow),
+                0 0 0 1px rgba(0, 206, 200, 0.1);
+            border: 1px solid rgba(42, 68, 112, 0.7);
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(25px);
+            animation: cardSlideUp 0.9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            animation-delay: 1s;
+            backdrop-filter: blur(15px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                var(--accent) 50%, 
+                transparent 100%);
+        }
+
+        @keyframes cardSlideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 20px 50px var(--shadow),
+                0 0 0 1px rgba(0, 206, 200, 0.2),
+                0 0 40px var(--accent-glow);
+            border-color: rgba(0, 206, 200, 0.4);
         }
 
         .intro-text {
-            font-size: 1.125rem;
-            line-height: 1.7;
+            font-size: 1.15rem;
+            line-height: 1.8;
             text-align: left;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
         }
 
-        /* Projects Section */
-        .projects-section {
+        /* Project Segments */
+        .projects-container {
             width: 100%;
             max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            gap: var(--section-spacing);
         }
 
+        .segment {
+            margin-bottom: 3rem;
+        }
+
+        .segment-header {
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .segment-title {
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .segment-subtitle {
+            color: var(--text-muted);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.95rem;
+            font-weight: 400;
+        }
+
+        /* Projects Grid / Scroll Container */
         .projects-scroll-container {
             position: relative;
         }
@@ -205,108 +410,230 @@
         .projects-grid {
             display: flex;
             gap: 2rem;
-            padding: 1rem 0 2rem;
+            padding: 1rem 0 2.5rem;
             overflow-x: auto;
             scroll-behavior: smooth;
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent) var(--bg-card);
         }
 
         .projects-grid::-webkit-scrollbar {
-            display: none; /* Chrome, Safari, Opera */
+            height: 10px;
         }
 
+        .projects-grid::-webkit-scrollbar-track {
+            background: var(--bg-card);
+            border-radius: 5px;
+            margin: 0 1rem;
+        }
+
+        .projects-grid::-webkit-scrollbar-thumb {
+            background: linear-gradient(90deg, var(--accent), var(--accent-light));
+            border-radius: 5px;
+        }
+
+        /* Project Card Design */
         .project-card {
             flex: 0 0 auto;
-            width: 320px;
-            background-color: var(--bg-card);
+            width: 340px;
+            background: var(--bg-card);
             border-radius: var(--radius);
-            padding: 2rem;
-            box-shadow: 0 4px 12px var(--shadow);
+            padding: 2.25rem;
+            box-shadow: 0 8px 30px var(--shadow);
             border: 1px solid var(--border);
             display: flex;
             flex-direction: column;
             transition: var(--transition);
+            opacity: 0;
+            transform: translateY(25px);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--accent), var(--accent-light));
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .project-card.visible {
+            animation: cardFadeIn 0.7s ease forwards;
+        }
+
+        .project-card:nth-child(1) { animation-delay: 0.1s; }
+        .project-card:nth-child(2) { animation-delay: 0.2s; }
+        .project-card:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes cardFadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .project-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px var(--shadow-hover);
+            transform: translateY(-8px);
+            box-shadow: 
+                0 16px 40px var(--shadow),
+                0 0 25px var(--accent-glow);
+            border-color: rgba(0, 206, 200, 0.5);
+        }
+
+        .project-card:hover::before {
+            opacity: 1;
+        }
+
+        .project-category {
+            font-size: 0.8rem;
+            color: var(--accent);
+            font-family: 'IBM Plex Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            font-weight: 500;
         }
 
         .project-name {
             font-size: 1.5rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1.25rem;
             color: var(--text-primary);
+            font-family: 'Space Grotesk', sans-serif;
+            line-height: 1.3;
         }
 
         .project-description {
-            font-size: 1rem;
-            line-height: 1.6;
+            font-size: 0.95rem;
+            line-height: 1.7;
             color: var(--text-secondary);
             margin-bottom: 2rem;
             flex-grow: 1;
+            font-family: 'JetBrains Mono', monospace;
         }
 
         .view-project-btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            background-color: var(--accent);
-            color: white;
-            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, var(--accent), rgba(0, 206, 200, 0.9));
+            color: #0D1A2B;
+            padding: 0.875rem 1.75rem;
             border-radius: 8px;
-            font-weight: 500;
-            font-size: 0.9375rem;
+            font-weight: 600;
+            font-size: 0.9rem;
             transition: var(--transition);
             border: none;
             cursor: pointer;
             width: 100%;
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .view-project-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s;
+            z-index: -1;
         }
 
         .view-project-btn:hover {
-            background-color: var(--text-primary);
-            color: white;
             transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 206, 200, 0.4);
         }
 
-        /* Scroll indicators for mobile */
-        .scroll-hint {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: var(--bg-card);
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
+        .view-project-btn:hover::before {
+            left: 100%;
+        }
+
+        /* Section Connection Lines */
+        .section-connector {
+            position: relative;
+            height: 40px;
+            display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--text-muted);
-            box-shadow: 0 2px 8px var(--shadow);
-            z-index: 10;
+            margin: 1.5rem 0;
+        }
+
+        .section-connector::before {
+            content: '';
+            position: absolute;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 0%, var(--accent) 50%, transparent 100%);
+            animation: pulseLine 3s infinite;
+        }
+
+        @keyframes pulseLine {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
         }
 
         /* Footer */
         .site-footer {
-            padding: 2rem;
+            padding: 2.5rem;
             text-align: center;
             border-top: 1px solid var(--border);
             color: var(--text-muted);
             font-size: 0.9375rem;
-            background-color: var(--bg-primary);
+            background: rgba(13, 26, 43, 0.95);
+            backdrop-filter: blur(15px);
+            position: relative;
+            z-index: 1;
+            margin-top: var(--section-spacing);
         }
 
         /* Responsive Design */
+        @media (min-width: 768px) {
+            .back-link .text {
+                display: inline;
+                font-size: 0.9rem;
+            }
+            
+            .back-link .icon {
+                display: none;
+            }
+            
+            .hero-card {
+                padding: 3.5rem;
+            }
+        }
+
         @media (max-width: 1024px) {
             .projects-grid {
                 padding-bottom: 3rem;
             }
             
-            .scroll-hint {
-                display: flex;
-            }
+            @media (max-width: 1024px) {
+    .city-dropdown {
+        right: 0;
+        left: auto;
+        min-width: 240px;
+    }
+}
+
+@media (max-width: 480px) {
+    .city-dropdown {
+        min-width: 200px;
+        right: 0;
+        left: auto;
+    }
+}
         }
 
         @media (max-width: 768px) {
@@ -319,42 +646,88 @@
             }
             
             h1 {
+                font-size: 2.2rem;
+            }
+            
+            h2 {
+                font-size: 1.7rem;
+            }
+            
+            .hero-title-container {
+                height: 70px;
+            }
+            
+            .hero-title {
                 font-size: 2rem;
             }
             
-            .intro-card {
-                padding: 1.5rem;
+            .hero-card {
+                padding: 2rem 1.5rem;
+                margin-left: 0;
+                margin-right: 0;
+                width: 100%;
+                border-radius: 12px;
             }
             
             .intro-text {
-                font-size: 1rem;
+                font-size: 1.05rem;
+                text-align: left;
+                width: 100%;
+                max-width: none;
             }
             
             .project-card {
-                width: 280px;
-                padding: 1.5rem;
+                width: 300px;
+                padding: 2rem;
             }
             
             .header-controls {
                 gap: 1rem;
             }
-        }
-
-        @media (max-width: 480px) {
-            .lagos-clock {
+            
+            .city-clock {
+                font-size: 0.8rem;
+                padding: 0.5rem 0.75rem;
+            }
+            
+            .city-clock span:first-child {
                 display: none;
             }
             
-            .project-card {
-                width: 260px;
+            .segment-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
             }
         }
 
-        /* Desktop layout - 3 columns when enough space */
+        @media (max-width: 480px) {
+            .project-card {
+                width: 280px;
+                padding: 1.75rem;
+            }
+            
+            .hero-title {
+                font-size: 1.8rem;
+            }
+            
+            .hero-card {
+                padding: 1.75rem 1.25rem;
+            }
+            
+            .city-clock {
+                padding: 0.5rem;
+                min-width: auto;
+            }
+            
+            
+        }
+
+        /* Desktop Grid Layout */
         @media (min-width: 1200px) {
             .projects-grid {
                 display: grid;
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
                 overflow-x: visible;
                 gap: 2.5rem;
             }
@@ -363,253 +736,722 @@
                 width: 100%;
             }
         }
+
+        /* Performance optimizations */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            
+            .typewriter-cursor {
+                animation: none;
+                opacity: 1;
+            }
+        }
+
+        /* Scroll Animation for Cards */
+        .scroll-triggered {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .scroll-triggered.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 </head>
-<body data-theme="light">
+<body>
+    <!-- Plexus Background Canvas -->
+    <canvas id="plexus-canvas"></canvas>
+
     <header class="site-header">
-        <a href="index.html" class="back-link">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 4L6 8L10 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            Back to main portfolio
+        <a href="index.html" class="back-link" aria-label="Back to main portfolio">
+            <span class="icon">&lt;</span>
+            <span class="text">Back to portfolio</span>
         </a>
         
         <div class="header-controls">
-            <div class="lagos-clock" id="lagosClock">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="7" cy="7" r="6.5" stroke="currentColor"/>
-                    <path d="M7 3V7L9.5 8.5" stroke="currentColor" stroke-linecap="round"/>
-                </svg>
-                <span id="clock">Lagos: 00:00</span>
+            <div class="city-clock-container">
+                <div class="city-clock" id="cityClock">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="7" cy="7" r="6.5" stroke="currentColor"/>
+                        <path d="M7 3V7L9.5 8.5" stroke="currentColor" stroke-linecap="round"/>
+                    </svg>
+                    <span id="cityName">Lagos</span>
+                    <span id="clockTime">00:00</span>
+                </div>
+                <div class="city-dropdown" id="cityDropdown">
+                    <div class="city-option active" data-city="Lagos" data-timezone="Africa/Lagos">
+                        <span class="city-flag">🇳🇬</span> Lagos, Nigeria
+                    </div>
+                    <div class="city-option" data-city="London" data-timezone="Europe/London">
+                        <span class="city-flag">🇬🇧</span> London, United Kingdom
+                    </div>
+                    <div class="city-option" data-city="New York" data-timezone="America/New_York">
+                        <span class="city-flag">🇺🇸</span> New York, USA
+                    </div>
+                    <div class="city-option" data-city="Tokyo" data-timezone="Asia/Tokyo">
+                        <span class="city-flag">🇯🇵</span> Tokyo, Japan
+                    </div>
+                    <div class="city-option" data-city="Dubai" data-timezone="Asia/Dubai">
+                        <span class="city-flag">🇦🇪</span> Dubai, UAE
+                    </div>
+                    <div class="city-option" data-city="Sydney" data-timezone="Australia/Sydney">
+                        <span class="city-flag">🇦🇺</span> Sydney, Australia
+                    </div>
+                    <div class="city-option" data-city="Singapore" data-timezone="Asia/Singapore">
+                        <span class="city-flag">🇸🇬</span> Singapore
+                    </div>
+                </div>
             </div>
-            
-            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10 2C10 2 13 4 13 10C13 16 10 18 10 18C5.5 18 2 14.5 2 10C2 5.5 5.5 2 10 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </button>
         </div>
     </header>
 
     <main>
         <div class="page-title">
-            <h1>Side Projects & Product Experiments</h1>
+            <div class="hero-title-container">
+                <h1 class="hero-title" id="hero-title"></h1>
+                <span class="typewriter-cursor" id="typewriter-cursor"></span>
+            </div>
+            <p>Technical Experiments & Creative Explorations</p>
         </div>
         
-        <div class="intro-card">
-            <p class="intro-text">
-               Independent product experiments designed to identify user problems and rapidly test solutions. I validated each concept by building prototypes and collecting qualitative feedback directly from potential users, using those insights to drive iteration and focus on the core product vision.
-            </p>
+        <div class="hero-card-container">
+            <div class="hero-card">
+                <p class="intro-text">
+                    <strong>Independent product experiments driven by curiosity and technical exploration.</strong> Each concept validates user problems through rapid prototyping and direct feedback collection, using insights to iterate and refine the core product vision through <strong>systematic observation</strong> and <strong>problem-driven experimentation</strong>.
+                </p>
+            </div>
         </div>
         
-        <section class="projects-section">
-            <div class="projects-scroll-container">
-                <div class="projects-grid" id="projectsGrid">
-                    <!-- Project 1 -->
-                    <article class="project-card">
-                        <h3 class="project-name">PulseCheck</h3>
-                        <p class="project-description">
-                            A lightweight tool for remote teams to track sentiment and identify burnout signals early, maintaining emotional connectivity without invading privacy.
-                        </p>
-                        <a href="pulsecheck.html" target="_blank" class="view-project-btn">
-                            View project
-                        </a>
-                    </article>
-                    
-                    <!-- Project 2 -->
-                    <article class="project-card">
-                        <h3 class="project-name">Finance Study App</h3>
-                        <p class="project-description">
-                            Interactive educational tool that simplifies personal finance through progressive scenarios, building confidence in recent graduates.
-                        </p>
-                        <a href="https://placeholder-financeapp-url.com" target="_blank" class="view-project-btn">
-                            View project
-                        </a>
-                    </article>
-                    
-                    <!-- Project 3 -->
-                    <article class="project-card">
-                        <h3 class="project-name">Local Discovery</h3>
-                        <p class="project-description">
-                            Community-verified recommendation engine for finding authentic local businesses and neighborhood resources.
-                        </p>
-                        <a href="https://placeholder-localdiscovery-url.com" target="_blank" class="view-project-btn">
-                            View project
-                        </a>
-                    </article>
+        <div class="projects-container">
+            <!-- Product Projects Segment -->
+            <section class="segment" id="product-projects">
+                <div class="segment-header">
+                    <div>
+                        <h2 class="segment-title">Product Projects</h2>
+                        <p class="segment-subtitle">Technical implementations and product experiments</p>
+                    </div>
                 </div>
                 
-                <div class="scroll-hint" id="scrollHint">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
+                <div class="projects-scroll-container">
+                    <div class="projects-grid">
+                        <!-- Project 1 -->
+                        <article class="project-card scroll-triggered">
+                            <div class="project-category">Product</div>
+                            <h3 class="project-name">PulseCheck</h3>
+                            <p class="project-description">
+                                A <strong>lightweight tool for remote teams</strong> to track sentiment and identify burnout signals early, maintaining <strong>emotional connectivity</strong> without invading privacy. Features real-time analytics and anonymous feedback systems.
+                            </p>
+                            <a href="pulsecheck.html" target="_blank" class="view-project-btn">
+                                View project
+                            </a>
+                        </article>
+                        
+                        <!-- Project 2 -->
+                        <article class="project-card scroll-triggered">
+                            <div class="project-category">Product</div>
+                            <h3 class="project-name">Finance Study App</h3>
+                            <p class="project-description">
+                                Interactive educational tool that <strong>simplifies personal finance</strong> through progressive scenarios, building confidence in recent graduates. Uses <strong>adaptive learning algorithms</strong> to tailor content to individual progress.
+                            </p>
+                            <a href="https://placeholder-financeapp-url.com" target="_blank" class="view-project-btn">
+                                View project
+                            </a>
+                        </article>
+                        
+                        <!-- Project 3 -->
+                        <article class="project-card scroll-triggered">
+                            <div class="project-category">Product</div>
+                            <h3 class="project-name">Local Discovery</h3>
+                            <p class="project-description">
+                                Community-verified recommendation engine for finding <strong>authentic local businesses</strong> and neighborhood resources. Combines <strong>machine learning</strong> with human curation to surface hidden gems.
+                            </p>
+                            <a href="https://placeholder-localdiscovery-url.com" target="_blank" class="view-project-btn">
+                                View project
+                            </a>
+                        </article>
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
+            
+            <div class="section-connector"></div>
+            
+            <!-- Design Projects Segment -->
+            <section class="segment" id="design-projects">
+                <div class="segment-header">
+                    <div>
+                        <h2 class="segment-title">Design Projects</h2>
+                        <p class="segment-subtitle">Visual systems and interface explorations</p>
+                    </div>
+                </div>
+                
+                <div class="projects-scroll-container">
+                    <div class="projects-grid">
+                        <!-- Design Project 1 -->
+                        <article class="project-card scroll-triggered">
+                            <div class="project-category">Design System</div>
+                            <h3 class="project-name">Neon Design Language</h3>
+                            <p class="project-description">
+                                A comprehensive <strong>design system for technical products</strong>, featuring modular components, motion principles, and accessibility guidelines. Built with <strong>Figma and React</strong> for consistency across platforms.
+                            </p>
+                            <a href="#" class="view-project-btn">
+                                View case study
+                            </a>
+                        </article>
+                        
+                        <!-- Design Project 2 -->
+                        <article class="project-card scroll-triggered">
+                            <div class="project-category">UI/UX</div>
+                            <h3 class="project-name">Data Visualization Suite</h3>
+                            <p class="project-description">
+                                Custom <strong>data visualization components</strong> designed for clarity and insight discovery. Features interactive charts, real-time updates, and <strong>accessible color palettes</strong> for diverse data presentation needs.
+                            </p>
+                            <a href="#" class="view-project-btn">
+                                View designs
+                            </a>
+                        </article>
+                        
+                        <!-- Design Project 3 -->
+                        <article class="project-card scroll-triggered">
+                            <div class="project-category">Brand Identity</div>
+                            <h3 class="project-name">Tech Startup Branding</h3>
+                            <p class="project-description">
+                                Complete <strong>brand identity system</strong> for an AI research startup, including logo design, typography hierarchy, color system, and <strong>visual language guidelines</strong> for technical audiences.
+                            </p>
+                            <a href="#" class="view-project-btn">
+                                View brand book
+                            </a>
+                        </article>
+                    </div>
+                </div>
+            </section>
+            
+            <div class="section-connector"></div>
+            
+            <!-- Articles & Discovery Segment -->
+            <section class="segment" id="articles-discovery">
+                <div class="segment-header">
+                    <div>
+                        <h2 class="segment-title">Articles & Discovery</h2>
+                        <p class="segment-subtitle">Technical writing and experimental findings</p>
+                    </div>
+                </div>
+                
+                <div class="projects-scroll-container">
+                    <div class="projects-grid">
+                        <!-- Article 1 -->
+                        <article class="project-card scroll-triggered">
+                            <div class="project-category">Technical Article</div>
+                            <h3 class="project-name">Building Interactive Web Visualizations</h3>
+                            <p class="project-description">
+                                Deep dive into <strong>Canvas and WebGL techniques</strong> for high-performance data visualization in the browser. Covers optimization strategies, <strong>GPU acceleration</strong>, and responsive design patterns.
+                            </p>
+                            <a href="#" class="view-project-btn">
+                                Read article
+                            </a>
+                        </article>
+                        
+                        <!-- Article 2 -->
+                        <article class="project-card scroll-triggered">
+                            <div class="project-category">Case Study</div>
+                            <h3 class="project-name">User Research in Emerging Markets</h3>
+                            <p class="project-description">
+                                Exploration of <strong>unique challenges and methodologies</strong> for conducting user research in emerging tech markets. Includes findings from field studies and <strong>adaptive research techniques</strong>.
+                            </p>
+                            <a href="#" class="view-project-btn">
+                                Read case study
+                            </a>
+                        </article>
+                        
+                        <!-- Article 3 -->
+                        <article class="project-card scroll-triggered">
+                            <div class="project-category">Technical Discovery</div>
+                            <h3 class="project-name">Experimental Animation Systems</h3>
+                            <p class="project-description">
+                                Research into <strong>physics-based animation systems</strong> for web interfaces. Documents experiments with spring dynamics, particle systems, and <strong>real-time motion synthesis</strong>.
+                            </p>
+                            <a href="#" class="view-project-btn">
+                                View research
+                            </a>
+                        </article>
+                    </div>
+                </div>
+            </section>
+        </div>
     </main>
 
     <footer class="site-footer">
-        <p>Ayomide Ayodele - Product Portfolio</p>
+        <p>Ayomide Ayodele Portfolio</p>
     </footer>
 
     <script>
-        // Theme Toggle Functionality
-        const themeToggle = document.getElementById('themeToggle');
-        const body = document.body;
-        
-        // Check for saved theme or prefer-color-scheme
-        const savedTheme = localStorage.getItem('portfolio-theme') || 
-                          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        
-        // Apply saved theme
-        body.setAttribute('data-theme', savedTheme);
-        
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = body.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        // ============================================
+        // ENHANCED PLEXUS BACKGROUND
+        // ============================================
+        (function() {
+            const canvas = document.getElementById('plexus-canvas');
+            const ctx = canvas.getContext('2d');
             
-            body.setAttribute('data-theme', newTheme);
-            localStorage.setItem('portfolio-theme', newTheme);
+            // Blue-toned color scheme as specified
+            const NODE_COLOR = 'rgba(160,255,250,0.9)'; // Teal/Cyan nodes
+            const LINE_COLOR = 'rgba(0,206,200,0.45)'; // Subtle teal lines
+            const BG_COLOR = '#0D1A2B'; // Deep technical blue
             
-            // Update toggle icon
-            updateThemeIcon(newTheme);
-        });
-        
-        function updateThemeIcon(theme) {
-            const icon = themeToggle.querySelector('svg');
-            if (theme === 'light') {
-                icon.innerHTML = `<path d="M10 2C10 2 13 4 13 10C13 16 10 18 10 18C5.5 18 2 14.5 2 10C2 5.5 5.5 2 10 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>`;
-            } else {
-                icon.innerHTML = `<path d="M10 15C12.76 15 15 12.76 15 10C15 7.24 12.76 5 10 5C7.24 5 5 7.24 5 10C5 12.76 7.24 15 10 15Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                  <path d="M10 1V2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                                  <path d="M10 18V19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                                  <path d="M1 10H2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                                  <path d="M18 10H19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                                  <path d="M15.07 3.07L15.78 3.78" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                                  <path d="M4.22 13.22L4.93 13.93" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                                  <path d="M4.93 4.93L4.22 5.64" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                                  <path d="M15.78 15.78L15.07 16.49" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>`;
-            }
-        }
-        
-        // Initialize theme icon
-        updateThemeIcon(savedTheme);
-        
-        // Lagos Clock Functionality
-        function updateLagosTime() {
-            const lagosTime = new Date().toLocaleTimeString('en-US', {
-                timeZone: 'Africa/Lagos',
-                hour12: false,
-                hour: '2-digit',
-                minute: '2-digit'
-            });
+            let nodes = [];
+            let mouse = { x: 0, y: 0, active: false };
+            let animationId = null;
+            let pulsePhase = 0;
             
-            document.getElementById('clock').textContent = `Lagos: ${lagosTime}`;
-        }
-        
-        // Update time immediately and then every minute
-        updateLagosTime();
-        setInterval(updateLagosTime, 60000);
-        
-        // Horizontal scrolling for mobile
-        const projectsGrid = document.getElementById('projectsGrid');
-        const scrollHint = document.getElementById('scrollHint');
-        
-        function updateScrollHint() {
-            if (projectsGrid.scrollWidth > projectsGrid.clientWidth) {
-                scrollHint.style.display = 'flex';
+            // Enhanced Node class with pulsing behavior
+            class Node {
+                constructor() {
+                    this.reset();
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.pulseOffset = Math.random() * Math.PI * 2;
+                    this.pulseSpeed = 0.5 + Math.random() * 0.5;
+                }
                 
-                // Hide hint after user starts scrolling
-                let scrollTimeout;
-                projectsGrid.addEventListener('scroll', () => {
-                    scrollHint.style.opacity = '0';
-                    clearTimeout(scrollTimeout);
+                reset() {
+                    const isMobile = window.innerWidth <= 768;
+                    this.radius = (isMobile ? 1.2 : 1.8) + Math.random() * 1.2;
+                    this.baseRadius = this.radius;
+                    this.baseX = Math.random() * canvas.width;
+                    this.baseY = Math.random() * canvas.height;
+                    this.x = this.baseX;
+                    this.y = this.baseY;
+                    this.vx = (Math.random() - 0.5) * 0.3;
+                    this.vy = (Math.random() - 0.5) * 0.3;
+                    this.drift = Math.random() * 0.01 + 0.005;
+                    this.driftAngle = Math.random() * Math.PI * 2;
+                    this.connectionCount = 0;
+                }
+                
+                update(time) {
+                    // Slow drift movement
+                    this.driftAngle += this.drift * 0.1;
+                    this.baseX += Math.cos(this.driftAngle) * 0.06;
+                    this.baseY += Math.sin(this.driftAngle) * 0.06;
                     
-                    scrollTimeout = setTimeout(() => {
-                        scrollHint.style.opacity = '1';
-                    }, 3000);
+                    // Gentle pulsing effect
+                    this.radius = this.baseRadius + Math.sin(time * this.pulseSpeed + this.pulseOffset) * 0.3;
+                    
+                    // Apply mouse attraction on desktop
+                    if (mouse.active && window.innerWidth > 768) {
+                        const dx = mouse.x - this.x;
+                        const dy = mouse.y - this.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (distance < 150) {
+                            const force = (150 - distance) / 150 * 0.12;
+                            this.vx += (dx / distance) * force;
+                            this.vy += (dy / distance) * force;
+                        }
+                    }
+                    
+                    // Return to base position with smooth easing
+                    const dx = this.baseX - this.x;
+                    const dy = this.baseY - this.y;
+                    this.vx += dx * 0.0006;
+                    this.vy += dy * 0.0006;
+                    
+                    // Apply velocity with friction
+                    this.vx *= 0.97;
+                    this.vy *= 0.97;
+                    
+                    // Update position
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    
+                    // Soft boundary with wrap-around
+                    const margin = 30;
+                    if (this.x < -margin) this.x = canvas.width + margin;
+                    if (this.x > canvas.width + margin) this.x = -margin;
+                    if (this.y < -margin) this.y = canvas.height + margin;
+                    if (this.y > canvas.height + margin) this.y = -margin;
+                }
+                
+                draw() {
+                    // Draw node with enhanced glow
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius * 1.5, 0, Math.PI * 2);
+                    
+                    const gradient = ctx.createRadialGradient(
+                        this.x, this.y, 0,
+                        this.x, this.y, this.radius * 2.5
+                    );
+                    gradient.addColorStop(0, 'rgba(160,255,250,0.3)');
+                    gradient.addColorStop(1, 'rgba(160,255,250,0)');
+                    
+                    ctx.fillStyle = gradient;
+                    ctx.fill();
+                    
+                    // Node core
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = NODE_COLOR;
+                    ctx.fill();
+                }
+            }
+            
+            // Initialize nodes based on screen size
+            function initNodes() {
+                nodes = [];
+                const isMobile = window.innerWidth <= 768;
+                const baseArea = window.innerWidth * window.innerHeight;
+                const particleCount = isMobile ? 
+                    Math.floor(baseArea / 35000) : // Less dense on mobile
+                    Math.floor(baseArea / 22000);   // More dense on desktop
+                
+                const minParticles = isMobile ? 20 : 45;
+                const maxParticles = isMobile ? 50 : 85;
+                const count = Math.min(maxParticles, Math.max(minParticles, particleCount));
+                
+                for (let i = 0; i < count; i++) {
+                    nodes.push(new Node());
+                }
+            }
+            
+            // Draw connections with intelligent density
+            function drawConnections() {
+                const connectionDistance = window.innerWidth <= 768 ? 110 : 140;
+                
+                // Reset connection counts
+                nodes.forEach(node => node.connectionCount = 0);
+                
+                // Draw connections
+                for (let i = 0; i < nodes.length; i++) {
+                    for (let j = i + 1; j < nodes.length; j++) {
+                        const dx = nodes[i].x - nodes[j].x;
+                        const dy = nodes[i].y - nodes[j].y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (distance < connectionDistance) {
+                            nodes[i].connectionCount++;
+                            nodes[j].connectionCount++;
+                            
+                            ctx.beginPath();
+                            ctx.moveTo(nodes[i].x, nodes[i].y);
+                            ctx.lineTo(nodes[j].x, nodes[j].y);
+                            
+                            const opacity = 0.45 * (1 - distance / connectionDistance);
+                            ctx.strokeStyle = `rgba(0, 206, 200, ${opacity})`;
+                            ctx.lineWidth = 0.7 * (1 - distance / connectionDistance);
+                            ctx.stroke();
+                        }
+                    }
+                }
+            }
+            
+            // Animation loop
+            function animate(time) {
+                // Clear with background color
+                ctx.fillStyle = BG_COLOR;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Update global pulse phase
+                pulsePhase += 0.01;
+                
+                // Update and draw nodes
+                nodes.forEach(node => {
+                    node.update(time * 0.001);
+                    node.draw();
                 });
-            } else {
-                scrollHint.style.display = 'none';
+                
+                // Draw connections
+                drawConnections();
+                
+                animationId = requestAnimationFrame(animate);
             }
-        }
-        
-        // Initialize and update on resize
-        updateScrollHint();
-        window.addEventListener('resize', updateScrollHint);
-        
-        // Auto-scroll hint animation
-        function animateScrollHint() {
-            if (scrollHint.style.display === 'flex') {
-                scrollHint.style.animation = 'pulse 2s infinite';
+            
+            // Handle window resize
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                initNodes();
             }
-        }
-        
-        // Add CSS animation for pulse effect
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes pulse {
-                0%, 100% { transform: translateY(-50%) translateX(0); opacity: 1; }
-                50% { transform: translateY(-50%) translateX(4px); opacity: 0.7; }
+            
+            // Mouse interaction
+            function handleMouseMove(e) {
+                if (window.innerWidth <= 768) return;
+                
+                mouse.x = e.clientX;
+                mouse.y = e.clientY;
+                mouse.active = true;
             }
-        `;
-        document.head.appendChild(style);
-        
-        animateScrollHint();
-        
-        // Smooth scrolling for the hint button
-        scrollHint.addEventListener('click', () => {
-            projectsGrid.scrollBy({
-                left: 300,
-                behavior: 'smooth'
-            });
-        });
-        
-        // Card hover effects enhancement
-        document.querySelectorAll('.project-card').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.zIndex = '10';
+            
+            function handleMouseLeave() {
+                mouse.active = false;
+            }
+            
+            // Initialize
+            function initPlexus() {
+                resizeCanvas();
+                window.addEventListener('resize', resizeCanvas);
+                
+                if (window.innerWidth > 768) {
+                    canvas.addEventListener('mousemove', handleMouseMove);
+                    canvas.addEventListener('mouseleave', handleMouseLeave);
+                }
+                
+                animate(0);
+            }
+            
+            initPlexus();
+        })();
+
+        // ============================================
+        // MULTI-CITY CLOCK IMPLEMENTATION
+        // ============================================
+        (function() {
+            const cityClock = document.getElementById('cityClock');
+            const cityDropdown = document.getElementById('cityDropdown');
+            const cityNameElement = document.getElementById('cityName');
+            const clockTimeElement = document.getElementById('clockTime');
+            const cityOptions = document.querySelectorAll('.city-option');
+            
+            let currentCity = { name: 'Lagos', timezone: 'Africa/Lagos' };
+            let updateInterval = null;
+            
+            // Toggle dropdown
+            cityClock.addEventListener('click', function(e) {
+                e.stopPropagation();
+                cityDropdown.classList.toggle('show');
             });
             
-            card.addEventListener('mouseleave', function() {
-                this.style.zIndex = '1';
-            });
-        });
-        
-        // Touch device detection for better scrolling
-        let isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints;
-        
-        if (isTouchDevice) {
-            projectsGrid.style.cursor = 'grab';
-            
-            let isDragging = false;
-            let startX, scrollLeft;
-            
-            projectsGrid.addEventListener('mousedown', (e) => {
-                isDragging = true;
-                projectsGrid.style.cursor = 'grabbing';
-                startX = e.pageX - projectsGrid.offsetLeft;
-                scrollLeft = projectsGrid.scrollLeft;
-            });
-            
-            projectsGrid.addEventListener('mouseleave', () => {
-                isDragging = false;
-                projectsGrid.style.cursor = 'grab';
+            // Handle city selection
+            cityOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const city = this.getAttribute('data-city');
+                    const timezone = this.getAttribute('data-timezone');
+                    
+                    currentCity.name = city;
+                    currentCity.timezone = timezone;
+                    
+                    cityNameElement.textContent = city;
+                    
+                    cityOptions.forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    cityDropdown.classList.remove('show');
+                    updateCityTime();
+                    
+                    localStorage.setItem('preferredCity', JSON.stringify(currentCity));
+                });
             });
             
-            projectsGrid.addEventListener('mouseup', () => {
-                isDragging = false;
-                projectsGrid.style.cursor = 'grab';
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!cityClock.contains(e.target) && !cityDropdown.contains(e.target)) {
+                    cityDropdown.classList.remove('show');
+                }
             });
             
-            projectsGrid.addEventListener('mousemove', (e) => {
-                if (!isDragging) return;
-                e.preventDefault();
-                const x = e.pageX - projectsGrid.offsetLeft;
-                const walk = (x - startX) * 2;
-                projectsGrid.scrollLeft = scrollLeft - walk;
+            // Update time for current city
+            function updateCityTime() {
+                try {
+                    const now = new Date();
+                    const formatter = new Intl.DateTimeFormat('en-US', {
+                        timeZone: currentCity.timezone,
+                        hour12: false,
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                    
+                    const timeString = formatter.format(now);
+                    clockTimeElement.textContent = timeString;
+                } catch (error) {
+                    console.error('Error updating city time:', error);
+                    clockTimeElement.textContent = '--:--';
+                }
+            }
+            
+            // Initialize city preference
+            function initCityPreference() {
+                const savedCity = localStorage.getItem('preferredCity');
+                if (savedCity) {
+                    try {
+                        const parsed = JSON.parse(savedCity);
+                        currentCity.name = parsed.name;
+                        currentCity.timezone = parsed.timezone;
+                        
+                        cityNameElement.textContent = currentCity.name;
+                        
+                        cityOptions.forEach(option => {
+                            if (option.getAttribute('data-city') === currentCity.name) {
+                                option.classList.add('active');
+                            }
+                        });
+                    } catch (e) {
+                        localStorage.removeItem('preferredCity');
+                    }
+                }
+            }
+            
+            
+        })();
+
+        // ============================================
+        // HERO TEXT TYPING ANIMATION
+        // ============================================
+        (function() {
+            const titleElement = document.getElementById('hero-title');
+            const cursorElement = document.getElementById('typewriter-cursor');
+            const text = "Portfolio Hub";
+            let currentText = '';
+            let charIndex = 0;
+            let isDeleting = false;
+            let typingSpeed = 100;
+            let pauseTime = 2500;
+            
+            function typeWriter() {
+                if (!isDeleting && charIndex < text.length) {
+                    currentText = text.substring(0, charIndex + 1);
+                    charIndex++;
+                    titleElement.textContent = currentText;
+                    typingSpeed = 80 + Math.random() * 40;
+                    
+                    setTimeout(typeWriter, typingSpeed);
+                } else if (!isDeleting && charIndex === text.length) {
+                    cursorElement.style.animation = 'none';
+                    setTimeout(() => {
+                        isDeleting = true;
+                        cursorElement.style.animation = 'blink 1.2s infinite';
+                        setTimeout(typeWriter, 500);
+                    }, pauseTime);
+                } else if (isDeleting && charIndex > 0) {
+                    currentText = text.substring(0, charIndex - 1);
+                    charIndex--;
+                    titleElement.textContent = currentText;
+                    typingSpeed = 40 + Math.random() * 20;
+                    
+                    setTimeout(typeWriter, typingSpeed);
+                } else {
+                    isDeleting = false;
+                    setTimeout(typeWriter, 1000);
+                }
+            }
+            
+            setTimeout(typeWriter, 1000);
+        })();
+
+        // ============================================
+        // SCROLL ANIMATIONS FOR CARDS
+        // ============================================
+        (function() {
+            const scrollElements = document.querySelectorAll('.scroll-triggered');
+            
+            const elementInView = (el, dividend = 1) => {
+                const elementTop = el.getBoundingClientRect().top;
+                return (
+                    elementTop <= 
+                    (window.innerHeight || document.documentElement.clientHeight) / dividend
+                );
+            };
+            
+            const displayScrollElement = (element) => {
+                element.classList.add('visible');
+            };
+            
+            const hideScrollElement = (element) => {
+                element.classList.remove('visible');
+            };
+            
+            const handleScrollAnimation = () => {
+                scrollElements.forEach((el) => {
+                    if (elementInView(el, 1.2)) {
+                        displayScrollElement(el);
+                    } else {
+                        hideScrollElement(el);
+                    }
+                });
+            };
+            
+            // Initial check
+            window.addEventListener('load', handleScrollAnimation);
+            window.addEventListener('scroll', handleScrollAnimation);
+            
+            // Also trigger on resize
+            window.addEventListener('resize', handleScrollAnimation);
+        })();
+
+        // ============================================
+        // RESPONSIVE BACK BUTTON BEHAVIOR
+        // ============================================
+        (function() {
+            const backLink = document.querySelector('.back-link');
+            const textSpan = backLink.querySelector('.text');
+            const iconSpan = backLink.querySelector('.icon');
+            
+            function updateBackButton() {
+                if (window.innerWidth < 768) {
+                    textSpan.style.display = 'none';
+                    iconSpan.style.display = 'inline';
+                } else {
+                    textSpan.style.display = 'inline';
+                    iconSpan.style.display = 'none';
+                }
+            }
+            
+            updateBackButton();
+            window.addEventListener('resize', updateBackButton);
+        })();
+
+        // ============================================
+        // ENHANCED HERO CARD HOVER EFFECTS
+        // ============================================
+        (function() {
+            const heroCard = document.querySelector('.hero-card');
+            
+            heroCard.addEventListener('mouseenter', function() {
+                if (window.innerWidth > 768) {
+                    this.style.transform = 'translateY(-5px)';
+                }
             });
-        }
+            
+            heroCard.addEventListener('mouseleave', function() {
+                if (window.innerWidth > 768) {
+                    this.style.transform = 'translateY(0)';
+                }
+            });
+        })();
+
+        // ============================================
+        // MOBILE TOUCH SCROLLING FOR PROJECTS
+        // ============================================
+        (function() {
+            if ('ontouchstart' in window) {
+                const projectsGrids = document.querySelectorAll('.projects-grid');
+                
+                projectsGrids.forEach(grid => {
+                    let isDragging = false;
+                    let startX, scrollLeft;
+                    
+                    grid.addEventListener('touchstart', (e) => {
+                        isDragging = true;
+                        startX = e.touches[0].pageX - grid.offsetLeft;
+                        scrollLeft = grid.scrollLeft;
+                    });
+                    
+                    grid.addEventListener('touchmove', (e) => {
+                        if (!isDragging) return;
+                        e.preventDefault();
+                        const x = e.touches[0].pageX - grid.offsetLeft;
+                        const walk = (x - startX) * 2;
+                        grid.scrollLeft = scrollLeft - walk;
+                    });
+                    
+                    grid.addEventListener('touchend', () => {
+                        isDragging = false;
+                    });
+                });
+            }
+        })();
     </script>
 </body>
 </html>
