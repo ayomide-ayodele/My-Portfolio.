@@ -1572,6 +1572,32 @@
             box-shadow: 0 0 0 3px rgba(31, 92, 176, 0.1);
         }
 
+        .form-success {
+    margin-top: 1.5rem;
+    padding: 1rem 1.5rem;
+    background: rgba(31, 92, 176, 0.2);
+    border: 1px solid var(--node-glow);
+    border-radius: 12px;
+    color: var(--text-main);
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    animation: fadeInOut 4s ease forwards;
+}
+
+.form-success i {
+    color: var(--node-glow);
+    font-size: 1.2rem;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translateY(-10px); }
+    10% { opacity: 1; transform: translateY(0); }
+    90% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-10px); }
+}
+
         textarea.form-control {
             min-height: 150px;
             resize: vertical;
@@ -2921,6 +2947,10 @@
             <i class="fas fa-paper-plane"></i>
             Send Message
         </button>
+        <div class="form-success" id="formSuccess" style="display: none;">
+            <i class="fas fa-check-circle"></i> 
+            <span>Thank you! Your message has been sent. I'll get back to you soon.</span>
+        </div>
     </form>
 </div>
             </div>
@@ -3610,14 +3640,21 @@
                     'Accept': 'application/json'
                 }
             })
+
             .then(response => {
-                if (response.ok) {
-                    alert('Thank you! Your message has been sent. I\'ll get back to you soon.');
-                    this.form.reset();
-                } else {
-                    throw new Error('Form submission failed');
-                }
-            })
+            if (response.ok) {
+        // Show custom success message
+           const successDiv = document.getElementById('formSuccess');
+           successDiv.style.display = 'flex';
+           this.form.reset();
+        // Hide after 4 seconds
+           setTimeout(() => {
+            successDiv.style.display = 'none';
+        }, 4000);
+    } else {
+        throw new Error('Form submission failed');
+    }
+})
             .catch(error => {
                 alert('Oops! There was a problem sending your message. Please try again.');
                 console.error('Form submission error:', error);
