@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>WhatsApp Status HD | Product Case Study</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -198,18 +198,19 @@
             background: var(--dark);
             color: white;
             text-decoration: none;
-            padding: 12px 24px;
+            padding: 10px 20px; /* Slightly smaller padding for modern look */
             border-radius: var(--radius-md);
             font-weight: 500;
             font-size: 15px;
             transition: var(--transition);
             border: 1px solid transparent;
+            box-shadow: var(--shadow-sm); /* Subtle shadow */
         }
 
         .back-to-portfolio:hover {
             background: var(--primary-dark);
             transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
+            box-shadow: var(--shadow-md); /* Deeper shadow on hover */
         }
 
         .back-to-portfolio i {
@@ -526,6 +527,7 @@
             box-shadow: var(--shadow-md);
             position: relative;
             transition: var(--transition);
+            overflow: visible; /* Ensure number label is not clipped */
         }
 
         .flow-step:hover {
@@ -550,6 +552,7 @@
             font-weight: 700;
             font-size: 18px;
             box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+            z-index: 2;
         }
 
         .flow-step-icon {
@@ -658,6 +661,7 @@
             border: 2px solid var(--gray-200);
             transition: var(--transition);
             position: relative;
+            overflow: visible;
         }
 
         .solution-card.recommended {
@@ -687,6 +691,8 @@
             font-weight: 700;
             letter-spacing: 0.5px;
             box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+            z-index: 2;
+            white-space: nowrap;
         }
 
         .solution-card h4 {
@@ -830,11 +836,98 @@
             font-size: 20px;
         }
 
+        /* ===== READ MORE / LESS TOGGLE (DESKTOP) ===== */
+        .card-content {
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .card-content.truncated {
+            max-height: 150px;
+            position: relative;
+        }
+        .card-content.truncated::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background: linear-gradient(to bottom, transparent, var(--light));
+            pointer-events: none;
+        }
+        body.dark-mode .card-content.truncated::after {
+            background: linear-gradient(to bottom, transparent, #1A2027);
+        }
+        .read-more-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            padding: 8px 0;
+            font-size: 14px;
+            display: inline-block;
+        }
+        .read-more-btn:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== MODAL FOR MOBILE READ MORE ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-content {
+            background: var(--light);
+            color: var(--dark);
+            border-radius: var(--radius-lg);
+            max-width: 90%;
+            max-height: 80%;
+            overflow-y: auto;
+            padding: 30px;
+            position: relative;
+            box-shadow: var(--shadow-lg);
+        }
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            color: var(--gray-600);
+            line-height: 1;
+        }
+        .close-modal:hover {
+            color: var(--primary);
+        }
+        body.dark-mode .modal-content {
+            background: #1A2027;
+            color: var(--gray-600);
+        }
+        /* Modal body should retain card content styling */
+        .modal-content .card-content {
+            max-height: none !important;
+            overflow: visible;
+        }
+        .modal-content .card-content.truncated::after {
+            display: none;
+        }
+
         /* ===== FOOTER ===== */
         .case-study-footer {
             background: var(--dark);
             color: white;
-            padding: 80px 0 40px;
+            padding: 40px 0 20px;
             position: relative;
         }
 
@@ -848,38 +941,11 @@
             margin: 0 auto;
         }
 
-        .footer-logo {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 30px;
-            font-size: 20px;
-            font-weight: 700;
-            color: white;
-            text-decoration: none;
-        }
-
-        body.dark-mode .footer-logo {
-            color: var(--gray-600);
-        }
-
-        .footer-logo-circle {
-            width: 44px;
-            height: 44px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-        }
-
         .copyright {
             color: rgba(255, 255, 255, 0.6);
             font-size: 14px;
-            margin-top: 40px;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 0;
+            border-top: none;
         }
 
         /* ===== RESPONSIVE DESIGN ===== */
@@ -911,8 +977,8 @@
             }
             
             .main-nav {
-                top: 64px;
-                margin-top: 64px;
+                top: 70px;
+                margin-top: 70px;
             }
             
             .nav-item {
@@ -939,6 +1005,129 @@
             .solution-comparison, .persona-grid, .success-indicators, .tradeoffs-grid {
                 grid-template-columns: 1fr;
             }
+
+            /* === MOBILE LAYOUT ADJUSTMENTS === */
+
+            /* Problem section: header full width, cards in horizontal scrollable row */
+            #problem .container {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(280px, 1fr));
+                gap: 20px;
+                overflow-x: auto;
+                align-items: start;
+                -webkit-overflow-scrolling: touch; /* smooth iOS scrolling */
+                scroll-behavior: smooth;
+            }
+            #problem .section-header {
+                grid-column: 1 / -1;
+                margin-bottom: 20px;
+            }
+            #problem .content-card {
+                width: auto;
+                margin-right: 0;
+                margin-bottom: 0;
+                height: auto;
+            }
+
+            /* User persona cards: scrollable row */
+            .persona-grid {
+                display: flex;
+                gap: 20px;
+                overflow-x: auto;
+                padding-bottom: 10px;
+                scroll-snap-type: x mandatory;
+                padding-left: 20px;
+                padding-right: 20px;
+                margin-left: -20px;
+                margin-right: -20px;
+                width: calc(100% + 40px);
+                -webkit-overflow-scrolling: touch;
+                scroll-behavior: smooth;
+            }
+            .persona-grid .persona-card {
+                flex: 0 0 280px;
+                scroll-snap-align: start;
+            }
+
+            /* Success indicators: scrollable row */
+            .success-indicators {
+                display: flex;
+                gap: 20px;
+                overflow-x: auto;
+                padding-bottom: 10px;
+                padding-left: 20px;
+                padding-right: 20px;
+                margin-left: -20px;
+                margin-right: -20px;
+                width: calc(100% + 40px);
+                -webkit-overflow-scrolling: touch;
+                scroll-behavior: smooth;
+            }
+            .success-indicators .indicator-card {
+                flex: 0 0 250px;
+            }
+
+            /* Solution comparison: scrollable row */
+            .solution-comparison {
+                display: flex;
+                gap: 20px;
+                overflow-x: auto;
+                overflow-y: visible;
+                padding-bottom: 10px;
+                padding-left: 20px;
+                padding-right: 20px;
+                margin-left: -20px;
+                margin-right: -20px;
+                width: calc(100% + 40px);
+                padding-top: 20px; /* FIX: prevent "Selected" badge cutoff */
+                -webkit-overflow-scrolling: touch;
+                scroll-behavior: smooth;
+            }
+            .solution-comparison .solution-card {
+                flex: 0 0 280px;
+            }
+            .solution-card.recommended {
+                transform: none;
+            }
+
+            /* Flow steps (proposed solution cards): scrollable row with padding for number labels */
+            .flow-steps {
+                display: flex;
+                gap: 20px;
+                overflow-x: auto;
+                padding-bottom: 10px;
+                padding-top: 20px;
+                padding-left: 20px;
+                padding-right: 20px;
+                margin-left: -20px;
+                margin-right: -20px;
+                width: calc(100% + 40px);
+                -webkit-overflow-scrolling: touch;
+                scroll-behavior: smooth;
+                flex-wrap: nowrap; /* ensure cards never wrap */
+            }
+            .flow-steps .flow-step {
+                flex: 0 0 280px;
+                margin-top: 0;
+            }
+
+            /* Tradeoffs grid: scrollable row */
+            .tradeoffs-grid {
+                display: flex;
+                gap: 20px;
+                overflow-x: auto;
+                padding-bottom: 10px;
+                padding-left: 20px;
+                padding-right: 20px;
+                margin-left: -20px;
+                margin-right: -20px;
+                width: calc(100% + 40px);
+                -webkit-overflow-scrolling: touch;
+                scroll-behavior: smooth;
+            }
+            .tradeoffs-grid .tradeoff-card {
+                flex: 0 0 280px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -957,10 +1146,6 @@
                 width: 48px;
                 height: 48px;
                 justify-content: center;
-            }
-            
-            .flow-steps {
-                grid-template-columns: 1fr;
             }
             
             .nav-right {
@@ -1057,24 +1242,26 @@
             
             <div class="content-card">
                 <h3><i class="fas fa-exclamation-triangle"></i> Problem Statement</h3>
-                <p>WhatsApp Status applies aggressive compression to all media to ensure accessibility across diverse network conditions. While this enables reliable performance globally, it creates quality degradation that affects:</p>
-                <ul style="padding-left: 20px; margin: 15px 0;">
-                    <li style="color: var(--gray-800);">Visual clarity for creative expression</li>
-                    <li style="color: var(--gray-800);">Professional presentation for small businesses</li>
-                    <li style="color: var(--gray-800);">Perceived platform quality among discerning users</li>
-                </ul>
-                <p>The current approach prioritizes universal accessibility at the expense of visual fidelity for users who value quality.</p>
+                <div class="card-content truncated" id="content-1">
+                    <p>The scale of this issue is substantial. WhatsApp Status is used by 500 million people daily , making it one of the most-viewed features on the platform. Independent technical analysis confirms that WhatsApp compresses standard images to approximately 1600 × 1052 pixels, reducing file sizes by up to 99.6% compared to original camera files .</p>
+                    <p>This level of compression creates visible quality degradation that impacts 200+ million businesses now using WhatsApp for customer engagement . When 72.4% of consumers are more likely to purchase from brands that offer messaging , degraded visuals represent a direct business impact.</p>
+                               <p>The current approach prioritizes universal accessibility at the expense of visual fidelity for users who value quality.</p>
+                </div>
+                <button class="read-more-btn" onclick="toggleReadMore('content-1', this)">Read more</button>
             </div>
             
             <div class="content-card">
                 <h3><i class="fas fa-chart-line"></i> Why This Problem Matters</h3>
-                <p>Status is a high-visibility surface that shapes user perception of WhatsApp's capabilities. When users cannot share content at acceptable quality levels:</p>
-                <ul style="padding-left: 20px; margin: 15px 0;">
-                    <li style="color: var(--gray-800);">Trust in the platform for expressive use decreases</li>
-                    <li style="color: var(--gray-800);">Professional users may seek alternative platforms</li>
-                    <li style="color: var(--gray-800);">A perception gap emerges compared to competitors emphasizing visual quality</li>
-                </ul>
-                <p>This creates a tension between WhatsApp's accessibility-first philosophy and evolving user expectations for visual communication.</p>
+                <div class="card-content truncated" id="content-2">
+                    <p>Consumer expectations around visual quality are shifting rapidly. According to Meta-commissioned research across 22 global markets with 11,056 respondents :</p>
+                    <ul style="padding-left: 20px; margin: 15px 0;">
+                        <li style="color: var(--gray-800);"> 72.4% of consumers are more likely to purchase from brands that offer messaging</li>
+                        <li style="color: var(--gray-800);"> 74.6% trust a business more when they can exchange messages with it</li>
+                        <li style="color: var(--gray-800);">66.8% feel frustrated when messaging isn't offered as a contact option</li>
+                    </ul>
+                    <p>For the 1.3+ million verified companies using WhatsApp Business platforms , image quality directly impacts brand perception. With 69% of consumers more likely to buy after messaging with a business , degraded visuals represent a competitive disadvantage against platforms offering higher quality sharing.</p>
+                </div>
+                <button class="read-more-btn" onclick="toggleReadMore('content-2', this)">Read more</button>
             </div>
         </div>
     </section>
@@ -1213,94 +1400,106 @@
             </div>
             
             <div class="solution-comparison">
+                <!-- Option A -->
                 <div class="solution-card">
                     <h4>Option A: Maintain Status Quo</h4>
-                    <p>Continue universal compression for all Status media.</p>
-                    <div class="solution-pros">
-                        <h5>Pros</h5>
-                        <div class="pro-item">
-                            <i class="fas fa-check"></i>
-                            <span>Consistent experience across all users</span>
+                    <div class="card-content truncated" id="content-sol-a">
+                        <p>Continue universal compression for all Status media.</p>
+                        <div class="solution-pros">
+                            <h5>Pros</h5>
+                            <div class="pro-item">
+                                <i class="fas fa-check"></i>
+                                <span>Consistent experience across all users</span>
+                            </div>
+                            <div class="pro-item">
+                                <i class="fas fa-check"></i>
+                                <span>Minimal infrastructure complexity</span>
+                            </div>
+                            <div class="pro-item">
+                                <i class="fas fa-check"></i>
+                                <span>Strong performance in low-bandwidth regions</span>
+                            </div>
                         </div>
-                        <div class="pro-item">
-                            <i class="fas fa-check"></i>
-                            <span>Minimal infrastructure complexity</span>
-                        </div>
-                        <div class="pro-item">
-                            <i class="fas fa-check"></i>
-                            <span>Strong performance in low-bandwidth regions</span>
+                        <div class="solution-cons">
+                            <h5>Cons</h5>
+                            <div class="con-item">
+                                <i class="fas fa-times"></i>
+                                <span>Does not address quality concerns</span>
+                            </div>
+                            <div class="con-item">
+                                <i class="fas fa-times"></i>
+                                <span>Limits expressive and professional use cases</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="solution-cons">
-                        <h5>Cons</h5>
-                        <div class="con-item">
-                            <i class="fas fa-times"></i>
-                            <span>Does not address quality concerns</span>
-                        </div>
-                        <div class="con-item">
-                            <i class="fas fa-times"></i>
-                            <span>Limits expressive and professional use cases</span>
-                        </div>
-                    </div>
+                    <button class="read-more-btn" onclick="toggleReadMore('content-sol-a', this)">Read more</button>
                 </div>
                 
+                <!-- Option B -->
+                <div class="solution-card">
+                    <h4>Option B: Network-Adaptive Quality</h4>
+                    <div class="card-content truncated" id="content-sol-b">
+                        <p>Automatic quality adjustment based on connection.</p>
+                        <div class="solution-pros">
+                            <h5>Pros</h5>
+                            <div class="pro-item">
+                                <i class="fas fa-check"></i>
+                                <span>Optimized experience without user action</span>
+                            </div>
+                            <div class="pro-item">
+                                <i class="fas fa-check"></i>
+                                <span>Efficient data usage through automation</span>
+                            </div>
+                        </div>
+                        <div class="solution-cons">
+                            <h5>Cons</h5>
+                            <div class="con-item">
+                                <i class="fas fa-times"></i>
+                                <span>Unpredictable outcomes for users</span>
+                            </div>
+                            <div class="con-item">
+                                <i class="fas fa-times"></i>
+                                <span>Lack of user control over final quality</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="read-more-btn" onclick="toggleReadMore('content-sol-b', this)">Read more</button>
+                </div>
+                
+                <!-- Option C (Recommended) -->
                 <div class="solution-card recommended">
                     <div class="recommended-badge">Selected</div>
                     <h4>Option C: HD Toggle for Status</h4>
-                    <p>Optional higher quality with clear user control and education.</p>
-                    <div class="solution-pros">
-                        <h5>Pros</h5>
-                        <div class="pro-item">
-                            <i class="fas fa-check"></i>
-                            <span>User control when quality matters</span>
+                    <div class="card-content truncated" id="content-sol-c">
+                        <p>Optional higher quality with clear user control and education.</p>
+                        <div class="solution-pros">
+                            <h5>Pros</h5>
+                            <div class="pro-item">
+                                <i class="fas fa-check"></i>
+                                <span>User control when quality matters</span>
+                            </div>
+                            <div class="pro-item">
+                                <i class="fas fa-check"></i>
+                                <span>Preserves WhatsApp's accessibility principles</span>
+                            </div>
+                            <div class="pro-item">
+                                <i class="fas fa-check"></i>
+                                <span>Aligns with user expectations from other platforms</span>
+                            </div>
                         </div>
-                        <div class="pro-item">
-                            <i class="fas fa-check"></i>
-                            <span>Preserves WhatsApp's accessibility principles</span>
-                        </div>
-                        <div class="pro-item">
-                            <i class="fas fa-check"></i>
-                            <span>Aligns with user expectations from other platforms</span>
-                        </div>
-                    </div>
-                    <div class="solution-cons">
-                        <h5>Cons</h5>
-                        <div class="con-item">
-                            <i class="fas fa-times"></i>
-                            <span>Added complexity to upload flow</span>
-                        </div>
-                        <div class="con-item">
-                            <i class="fas fa-times"></i>
-                            <span>Infrastructure costs for higher quality storage</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="solution-card">
-                    <h4>Option B: Network-Adaptive Quality</h4>
-                    <p>Automatic quality adjustment based on connection.</p>
-                    <div class="solution-pros">
-                        <h5>Pros</h5>
-                        <div class="pro-item">
-                            <i class="fas fa-check"></i>
-                            <span>Optimized experience without user action</span>
-                        </div>
-                        <div class="pro-item">
-                            <i class="fas fa-check"></i>
-                            <span>Efficient data usage through automation</span>
+                        <div class="solution-cons">
+                            <h5>Cons</h5>
+                            <div class="con-item">
+                                <i class="fas fa-times"></i>
+                                <span>Added complexity to upload flow</span>
+                            </div>
+                            <div class="con-item">
+                                <i class="fas fa-times"></i>
+                                <span>Infrastructure costs for higher quality storage</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="solution-cons">
-                        <h5>Cons</h5>
-                        <div class="con-item">
-                            <i class="fas fa-times"></i>
-                            <span>Unpredictable outcomes for users</span>
-                        </div>
-                        <div class="con-item">
-                            <i class="fas fa-times"></i>
-                            <span>Lack of user control over final quality</span>
-                        </div>
-                    </div>
+                    <button class="read-more-btn" onclick="toggleReadMore('content-sol-c', this)">Read more</button>
                 </div>
             </div>
             
@@ -1368,7 +1567,10 @@
                             <h4>Data Costs in Emerging Markets</h4>
                         </div>
                     </div>
-                    <p>The solution prioritizes clear education and defaults to prevent unintended data charges for users on limited plans. HD remains an explicit choice rather than an automatic upgrade.</p>
+                    <div class="card-content truncated" id="content-trade1">
+                        <p>The solution prioritizes clear education and defaults to prevent unintended data charges for users on limited plans. HD remains an explicit choice rather than an automatic upgrade.</p>
+                    </div>
+                    <button class="read-more-btn" onclick="toggleReadMore('content-trade1', this)">Read more</button>
                 </div>
                 
                 <div class="tradeoff-card">
@@ -1380,7 +1582,10 @@
                             <h4>Infrastructure Scalability</h4>
                         </div>
                     </div>
-                    <p>Higher quality media increases storage and delivery costs. The optional nature of HD allows for controlled scaling based on actual adoption rather than universal deployment.</p>
+                    <div class="card-content truncated" id="content-trade2">
+                        <p>Higher quality media increases storage and delivery costs. The optional nature of HD allows for controlled scaling based on actual adoption rather than universal deployment.</p>
+                    </div>
+                    <button class="read-more-btn" onclick="toggleReadMore('content-trade2', this)">Read more</button>
                 </div>
                 
                 <div class="tradeoff-card">
@@ -1392,25 +1597,34 @@
                             <h4>Predictable Performance</h4>
                         </div>
                     </div>
-                    <p>Maintaining consistent performance across devices and networks requires careful engineering. The solution isolates HD processing to minimize impact on core messaging performance.</p>
+                    <div class="card-content truncated" id="content-trade3">
+                        <p>Maintaining consistent performance across devices and networks requires careful engineering. The solution isolates HD processing to minimize impact on core messaging performance.</p>
+                    </div>
+                    <button class="read-more-btn" onclick="toggleReadMore('content-trade3', this)">Read more</button>
                 </div>
             </div>
             
             <div class="content-card" style="margin-top: 40px;">
                 <h3><i class="fas fa-check-circle"></i> Design Principles</h3>
-                <p>This approach is guided by several principles that reflect WhatsApp's product philosophy:</p>
-                <ul style="padding-left: 20px; margin: 15px 0;">
-                    <li style="color: var(--gray-800);"><strong>Choice with Education:</strong> Users can choose higher quality but are informed of the implications</li>
-                    <li style="color: var(--gray-800);"><strong>Progressive Disclosure:</strong> Advanced options are available but not forced upon users</li>
-                    <li style="color: var(--gray-800);"><strong>Context Awareness:</strong> The interface adapts to network conditions and user behavior patterns</li>
-                    <li style="color: var(--gray-800);"><strong>Incremental Improvement:</strong> Builds upon existing patterns rather than reinventing workflows</li>
-                </ul>
+                <div class="card-content truncated" id="content-design">
+                    <p>This approach is guided by several principles that reflect WhatsApp's product philosophy:</p>
+                    <ul style="padding-left: 20px; margin: 15px 0;">
+                        <li style="color: var(--gray-800);"><strong>Choice with Education:</strong> Users can choose higher quality but are informed of the implications</li>
+                        <li style="color: var(--gray-800);"><strong>Progressive Disclosure:</strong> Advanced options are available but not forced upon users</li>
+                        <li style="color: var(--gray-800);"><strong>Context Awareness:</strong> The interface adapts to network conditions and user behavior patterns</li>
+                        <li style="color: var(--gray-800);"><strong>Incremental Improvement:</strong> Builds upon existing patterns rather than reinventing workflows</li>
+                    </ul>
+                </div>
+                <button class="read-more-btn" onclick="toggleReadMore('content-design', this)">Read more</button>
             </div>
             
             <div class="content-card" style="margin-top: 30px;">
                 <h3><i class="fas fa-flag-checkered"></i> Conclusion</h3>
-                <p>This solution demonstrates product thinking under constraints: it addresses a real user need without compromising WhatsApp's core commitment to accessibility. By introducing intentional choice where quality matters most, while maintaining protective defaults for data-sensitive users, it represents a balanced approach to product evolution.</p>
-                <p style="margin-top: 15px; color: var(--gray-800);">The Status HD toggle doesn't aim to replace WhatsApp's compression-first philosophy, but rather to extend it with thoughtful optionality—acknowledging that different users have different needs, even within the same platform.</p>
+                <div class="card-content truncated" id="content-conclusion">
+                    <p>This solution demonstrates product thinking under constraints: it addresses a real user need without compromising WhatsApp's core commitment to accessibility. By introducing intentional choice where quality matters most, while maintaining protective defaults for data-sensitive users, it represents a balanced approach to product evolution.</p>
+                    <p style="margin-top: 15px; color: var(--gray-800);">The Status HD toggle doesn't aim to replace WhatsApp's compression-first philosophy, but rather to extend it with thoughtful optionality—acknowledging that different users have different needs, even within the same platform.</p>
+                </div>
+                <button class="read-more-btn" onclick="toggleReadMore('content-conclusion', this)">Read more</button>
             </div>
         </div>
     </section>
@@ -1419,19 +1633,20 @@
     <footer class="case-study-footer">
         <div class="container">
             <div class="footer-content">
-                <a href="#" class="footer-logo">
-                    <div class="footer-logo-circle">
-                        <i class="fas fa-lightbulb"></i>
-                    </div>
-                    <span>Product Strategy Case Study</span>
-                </a>
-                <p>A hypothetical exploration of product decision-making at scale. Not affiliated with WhatsApp or Meta.</p>
                 <div class="copyright">
-                    &copy; <span id="currentYear"></span> Product Manager Portfolio. This is a conceptual exercise.
+                    &copy; <span id="currentYear"></span> Ayomide Ayodele. All Rights Reserved.
                 </div>
             </div>
         </div>
     </footer>
+
+    <!-- Modal for mobile read more -->
+    <div id="readMoreModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div id="modal-body"></div>
+        </div>
+    </div>
 
     <script>
         // Set current year in footer
@@ -1563,6 +1778,76 @@
                 }
             }
         });
+
+        // Modal functions
+        const modal = document.getElementById('readMoreModal');
+        const modalBody = document.getElementById('modal-body');
+
+        window.closeModal = function() {
+            modal.style.display = 'none';
+        };
+
+        // Close modal when clicking outside content
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Read More Toggle Function (modified for mobile modal)
+        window.toggleReadMore = function(contentId, btn) {
+            const content = document.getElementById(contentId);
+            
+            // Check if mobile (max-width 768px)
+            if (window.innerWidth <= 768) {
+                // Open modal with full content
+                const clone = content.cloneNode(true);
+                clone.classList.remove('truncated');
+                clone.style.maxHeight = 'none';
+                clone.style.overflow = 'visible';
+                
+                // Clear previous content and append
+                modalBody.innerHTML = '';
+                modalBody.appendChild(clone);
+                
+                // Show modal
+                modal.style.display = 'flex';
+            } else {
+                // Desktop behavior: toggle truncated class
+                if (content.classList.contains('truncated')) {
+                    content.classList.remove('truncated');
+                    btn.textContent = 'Read less';
+                } else {
+                    content.classList.add('truncated');
+                    btn.textContent = 'Read more';
+                }
+            }
+        };
+
+        // Equal height for problem cards on mobile
+        function equalizeProblemCardHeights() {
+            if (window.innerWidth <= 768) {
+                const cards = document.querySelectorAll('#problem .content-card');
+                if (cards.length < 2) return;
+                // Reset heights
+                cards.forEach(card => card.style.height = 'auto');
+                // Get max height
+                let maxHeight = 0;
+                cards.forEach(card => {
+                    const height = card.offsetHeight;
+                    if (height > maxHeight) maxHeight = height;
+                });
+                // Set all to max height
+                cards.forEach(card => card.style.height = maxHeight + 'px');
+            } else {
+                // Reset heights on desktop
+                const cards = document.querySelectorAll('#problem .content-card');
+                cards.forEach(card => card.style.height = 'auto');
+            }
+        }
+
+        window.addEventListener('load', equalizeProblemCardHeights);
+        window.addEventListener('resize', equalizeProblemCardHeights);
     </script>
 </body>
 </html>
