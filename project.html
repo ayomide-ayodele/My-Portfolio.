@@ -41,7 +41,8 @@
 
         body {
             font-family: 'JetBrains Mono', monospace;
-            background-color: var(--bg-primary);
+            /* Background replaced with Use Case page gradient */
+            background: linear-gradient(90deg, #050814 0%, #071125 25%, #0B1D3A 50%, #12396B 100%);
             color: var(--text-primary);
             line-height: 1.6;
             min-height: 100vh;
@@ -113,14 +114,14 @@
             color: var(--accent-light);
         }
 
-        /* Plexus Canvas Background */
-        #plexus-canvas {
+        /* Particles background (copied from Use Case page) */
+        #particles-js {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
             pointer-events: none;
         }
 
@@ -763,10 +764,12 @@
             transform: translateY(0);
         }
     </style>
+    <!-- Add tsparticles library (same as Use Case page) -->
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
 </head>
 <body>
-    <!-- Plexus Background Canvas -->
-    <canvas id="plexus-canvas"></canvas>
+    <!-- Particles background (copied from Use Case page) -->
+    <div id="particles-js" style="position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:0; pointer-events:none;"></div>
 
     <header class="site-header">
         <a href="index.html" class="back-link" aria-label="Back to main portfolio">
@@ -991,221 +994,6 @@
 
     <script>
         // ============================================
-        // ENHANCED PLEXUS BACKGROUND
-        // ============================================
-        (function() {
-            const canvas = document.getElementById('plexus-canvas');
-            const ctx = canvas.getContext('2d');
-            
-            // Blue-toned color scheme as specified
-            const NODE_COLOR = 'rgba(160,255,250,0.9)'; // Teal/Cyan nodes
-            const LINE_COLOR = 'rgba(0,206,200,0.45)'; // Subtle teal lines
-            const BG_COLOR = '#0D1A2B'; // Deep technical blue
-            
-            let nodes = [];
-            let mouse = { x: 0, y: 0, active: false };
-            let animationId = null;
-            let pulsePhase = 0;
-            
-            // Enhanced Node class with pulsing behavior
-            class Node {
-                constructor() {
-                    this.reset();
-                    this.x = Math.random() * canvas.width;
-                    this.y = Math.random() * canvas.height;
-                    this.pulseOffset = Math.random() * Math.PI * 2;
-                    this.pulseSpeed = 0.5 + Math.random() * 0.5;
-                }
-                
-                reset() {
-                    const isMobile = window.innerWidth <= 768;
-                    this.radius = (isMobile ? 1.2 : 1.8) + Math.random() * 1.2;
-                    this.baseRadius = this.radius;
-                    this.baseX = Math.random() * canvas.width;
-                    this.baseY = Math.random() * canvas.height;
-                    this.x = this.baseX;
-                    this.y = this.baseY;
-                    this.vx = (Math.random() - 0.5) * 0.3;
-                    this.vy = (Math.random() - 0.5) * 0.3;
-                    this.drift = Math.random() * 0.01 + 0.005;
-                    this.driftAngle = Math.random() * Math.PI * 2;
-                    this.connectionCount = 0;
-                }
-                
-                update(time) {
-                    // Slow drift movement
-                    this.driftAngle += this.drift * 0.1;
-                    this.baseX += Math.cos(this.driftAngle) * 0.06;
-                    this.baseY += Math.sin(this.driftAngle) * 0.06;
-                    
-                    // Gentle pulsing effect
-                    this.radius = this.baseRadius + Math.sin(time * this.pulseSpeed + this.pulseOffset) * 0.3;
-                    
-                    // Apply mouse attraction on desktop
-                    if (mouse.active && window.innerWidth > 768) {
-                        const dx = mouse.x - this.x;
-                        const dy = mouse.y - this.y;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-                        
-                        if (distance < 150) {
-                            const force = (150 - distance) / 150 * 0.12;
-                            this.vx += (dx / distance) * force;
-                            this.vy += (dy / distance) * force;
-                        }
-                    }
-                    
-                    // Return to base position with smooth easing
-                    const dx = this.baseX - this.x;
-                    const dy = this.baseY - this.y;
-                    this.vx += dx * 0.0006;
-                    this.vy += dy * 0.0006;
-                    
-                    // Apply velocity with friction
-                    this.vx *= 0.97;
-                    this.vy *= 0.97;
-                    
-                    // Update position
-                    this.x += this.vx;
-                    this.y += this.vy;
-                    
-                    // Soft boundary with wrap-around
-                    const margin = 30;
-                    if (this.x < -margin) this.x = canvas.width + margin;
-                    if (this.x > canvas.width + margin) this.x = -margin;
-                    if (this.y < -margin) this.y = canvas.height + margin;
-                    if (this.y > canvas.height + margin) this.y = -margin;
-                }
-                
-                draw() {
-                    // Draw node with enhanced glow
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.radius * 1.5, 0, Math.PI * 2);
-                    
-                    const gradient = ctx.createRadialGradient(
-                        this.x, this.y, 0,
-                        this.x, this.y, this.radius * 2.5
-                    );
-                    gradient.addColorStop(0, 'rgba(160,255,250,0.3)');
-                    gradient.addColorStop(1, 'rgba(160,255,250,0)');
-                    
-                    ctx.fillStyle = gradient;
-                    ctx.fill();
-                    
-                    // Node core
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                    ctx.fillStyle = NODE_COLOR;
-                    ctx.fill();
-                }
-            }
-            
-            // Initialize nodes based on screen size
-            function initNodes() {
-                nodes = [];
-                const isMobile = window.innerWidth <= 768;
-                const baseArea = window.innerWidth * window.innerHeight;
-                const particleCount = isMobile ? 
-                    Math.floor(baseArea / 35000) : // Less dense on mobile
-                    Math.floor(baseArea / 22000);   // More dense on desktop
-                
-                const minParticles = isMobile ? 20 : 45;
-                const maxParticles = isMobile ? 50 : 85;
-                const count = Math.min(maxParticles, Math.max(minParticles, particleCount));
-                
-                for (let i = 0; i < count; i++) {
-                    nodes.push(new Node());
-                }
-            }
-            
-            // Draw connections with intelligent density
-            function drawConnections() {
-                const connectionDistance = window.innerWidth <= 768 ? 110 : 140;
-                
-                // Reset connection counts
-                nodes.forEach(node => node.connectionCount = 0);
-                
-                // Draw connections
-                for (let i = 0; i < nodes.length; i++) {
-                    for (let j = i + 1; j < nodes.length; j++) {
-                        const dx = nodes[i].x - nodes[j].x;
-                        const dy = nodes[i].y - nodes[j].y;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-                        
-                        if (distance < connectionDistance) {
-                            nodes[i].connectionCount++;
-                            nodes[j].connectionCount++;
-                            
-                            ctx.beginPath();
-                            ctx.moveTo(nodes[i].x, nodes[i].y);
-                            ctx.lineTo(nodes[j].x, nodes[j].y);
-                            
-                            const opacity = 0.45 * (1 - distance / connectionDistance);
-                            ctx.strokeStyle = `rgba(0, 206, 200, ${opacity})`;
-                            ctx.lineWidth = 0.7 * (1 - distance / connectionDistance);
-                            ctx.stroke();
-                        }
-                    }
-                }
-            }
-            
-            // Animation loop
-            function animate(time) {
-                // Clear with background color
-                ctx.fillStyle = BG_COLOR;
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                
-                // Update global pulse phase
-                pulsePhase += 0.01;
-                
-                // Update and draw nodes
-                nodes.forEach(node => {
-                    node.update(time * 0.001);
-                    node.draw();
-                });
-                
-                // Draw connections
-                drawConnections();
-                
-                animationId = requestAnimationFrame(animate);
-            }
-            
-            // Handle window resize
-            function resizeCanvas() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-                initNodes();
-            }
-            
-            // Mouse interaction
-            function handleMouseMove(e) {
-                if (window.innerWidth <= 768) return;
-                
-                mouse.x = e.clientX;
-                mouse.y = e.clientY;
-                mouse.active = true;
-            }
-            
-            function handleMouseLeave() {
-                mouse.active = false;
-            }
-            
-            // Initialize
-            function initPlexus() {
-                resizeCanvas();
-                window.addEventListener('resize', resizeCanvas);
-                
-                if (window.innerWidth > 768) {
-                    canvas.addEventListener('mousemove', handleMouseMove);
-                    canvas.addEventListener('mouseleave', handleMouseLeave);
-                }
-                
-                animate(0);
-            }
-            
-            initPlexus();
-        })();
-
-        // ============================================
         // MULTI-CITY CLOCK IMPLEMENTATION
         // ============================================
         (function() {
@@ -1421,8 +1209,26 @@
             });
         })();
 
-       
-        
+        // ============================================
+        // PARTICLES BACKGROUND (copied from Use Case page)
+        // ============================================
+        (function() {
+            if (typeof tsParticles !== 'undefined') {
+                tsParticles.load('particles-js', {
+                    background: { color: { value: "transparent" } },
+                    fpsLimit: 60,
+                    interactivity: { events: { onHover: { enable: true, mode: "repulse" } } },
+                    particles: {
+                        color: { value: ["#1F5CB0", "#42A4FF", "#2B7BD8"] },
+                        links: { color: "#42A4FF", distance: 120, enable: true, opacity: 0.3 },
+                        move: { enable: true, speed: 1.5 },
+                        number: { value: 70 },
+                        opacity: { value: 0.5 },
+                        size: { value: { min: 1, max: 3 } }
+                    }
+                });
+            }
+        })();
     </script>
 </body>
 </html>
