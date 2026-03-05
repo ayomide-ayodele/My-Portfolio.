@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PulseCheck - Product Case Study</title>
+    <style>
+        /* CSS Reset and Base Styles */
+        :root {
+            --white: #ffffff;
+            --gray-light: #f5f7fa;
+            --gray-medium: #e1e5eb;
+            --gray-dark: #6b7280;
+            --black: #1f2937;
+            --accent: #4f46e5;
+            --accent-light: #818cf8;
+            
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 1.5rem;
+            --spacing-lg: 2.5rem;
+            --spacing-xl: 4rem;
+            
+            --border-radius: 8px;
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+        }
+
+        .dark-mode {
+            --white: #111827;
+            --gray-light: #1f2937;
+            --gray-medium: #374151;
+            --gray-dark: #9ca3af;
+            --black: #f9fafb;
+            --accent: #6366f1;
+            --accent-light: #818cf8;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--white);
+            color: var(--black);
+            transition: var(--transition);
+            min-height: 100vh;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            margin-bottom: var(--spacing-md);
+            position: relative;
+            padding-left: var(--spacing-sm);
+        }
+
+        h2::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.25rem;
+            bottom: 0.25rem;
+            width: 3px;
+            background-color: var(--accent);
+            border-radius: var(--border-radius);
+        }
+
+        p {
+            margin-bottom: var(--spacing-md);
+        }
+
+        ul, ol {
+            margin-bottom: var(--spacing-md);
+            padding-left: var(--spacing-lg);
+        }
+
+        li {
+            margin-bottom: var(--spacing-xs);
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        a:hover {
+            color: var(--accent-light);
+        }
+
+        /* Layout */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        /* Header */
+        .header {
+            position: sticky;
+            top: 0;
+            background-color: var(--white);
+            border-bottom: 1px solid var(--gray-medium);
+            padding: var(--spacing-sm) 0;
+            z-index: 100;
+            transition: var(--transition);
+        }
+
+        .dark-mode .header {
+            background-color: var(--white);
+            border-bottom-color: var(--gray-medium);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .project-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        /* Clock */
+        .clock {
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            background-color: var(--gray-light);
+            border-radius: var(--border-radius);
+            color: var(--black);
+            transition: var(--transition);
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--black);
+            background-color: var(--gray-light);
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--gray-medium);
+        }
+
+        .theme-toggle i {
+            font-size: 1.25rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: var(--spacing-xl) 0;
+            text-align: center;
+            border-bottom: 1px solid var(--gray-medium);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .hero h1 {
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .hero-tag {
+            display: inline-block;
+            background-color: var(--accent);
+            color: white;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: var(--spacing-lg);
+            letter-spacing: 0.5px;
+        }
+
+        .hero-description {
+            font-size: 1.125rem;
+            color: var(--gray-dark);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Content Sections */
+        .section {
+            margin-bottom: var(--spacing-xl);
+            padding: var(--spacing-lg);
+            background-color: var(--gray-light);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .section p {
+            color: var(--gray-dark);
+        }
+
+        .section ul {
+            color: var(--gray-dark);
+        }
+
+        /* Highlight List */
+        .highlight-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .highlight-list li {
+            position: relative;
+            padding-left: var(--spacing-lg);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .highlight-list li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            padding: var(--spacing-xl) 0;
+            margin-top: var(--spacing-xl);
+            border-top: 1px solid var(--gray-medium);
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--accent);
+            color: white;
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 1.125rem;
+            transition: var(--transition);
+            border: 2px solid var(--accent);
+        }
+
+        .cta-button:hover {
+            background-color: transparent;
+            color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: var(--spacing-lg) 0;
+            border-top: 1px solid var(--gray-medium);
+            color: var(--gray-dark);
+            font-size: 0.875rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            .hero {
+                padding: var(--spacing-lg) 0;
+            }
+            
+            .section {
+                padding: var(--spacing-md);
+            }
+            
+            .container {
+                padding: 0 var(--spacing-sm);
+            }
+            
+            .header-controls {
+                gap: var(--spacing-sm);
+            }
+            
+            .clock {
+                font-size: 0.75rem;
+                padding: var(--spacing-xs);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--spacing-sm);
+            }
+            
+            .header-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            h1 {
+                font-size: 1.75rem;
+            }
+            
+            h2 {
+                font-size: 1.25rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container header-content">
+            <div class="project-name">PulseCheck</div>
+            <div class="header-controls">
+                <div class="clock" id="lagos-clock">00:00:00</div>
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <span class="hero-tag">Hackathon V1 Experiment</span>
+            <h1>Real-time stand-ups for short-term teams</h1>
+            <p class="hero-description">
+                A lightweight tool that enables fast team alignment without accounts, setup, or onboarding friction.
+            </p>
+        </section>
+
+        <!-- Project Overview -->
+        <section class="section" id="overview">
+            <h2>Project Overview</h2>
+            <p>
+                PulseCheck is a personal project and V1 experiment built during a hackathon. It addresses the specific communication needs of temporary teams who need to coordinate quickly without the overhead of traditional collaboration tools.
+            </p>
+            <p>
+                The tool provides a simple, real-time interface for team stand-ups where everyone can share progress, next steps, and blockers instantly through a shared link.
+            </p>
+        </section>
+
+        <!-- Why PulseCheck Existed -->
+        <section class="section" id="why">
+            <h2>Why PulseCheck Existed</h2>
+            <p>
+                During hackathons and short-term collaborations, tools like Slack and Discord introduce unnecessary friction. They require setup, onboarding, and familiarity that slow teams down in time-sensitive environments.
+            </p>
+            <p>
+                Many teams only need a fast, focused way to align on progress for a short period. PulseCheck was created as a lightweight alternative that eliminates these barriers to quick collaboration.
+            </p>
+        </section>
+
+        <!-- Problem Being Solved -->
+        <section class="section" id="problem">
+            <h2>Problem Being Solved</h2>
+            <p>
+                Short-term teams lack a simple way to see who is working on what in real time. Existing tools are designed for ongoing collaboration and become too heavy for temporary use.
+            </p>
+            <ul class="highlight-list">
+                <li>Setup and onboarding create coordination overhead</li>
+                <li>Poor visibility leads to duplicated work</li>
+                <li>Team members waste time coordinating instead of building</li>
+                <li>Complex interfaces distract from the core need: alignment</li>
+            </ul>
+        </section>
+
+        <!-- Goals and Success Criteria -->
+        <section class="section" id="goals">
+            <h2>Goals and Success Criteria</h2>
+            <ul>
+                <li>Enable real-time progress sharing without accounts or setup</li>
+                <li>Reduce coordination friction for hackathon teams</li>
+                <li>Provide structured communication to improve clarity</li>
+                <li>Deliver a functional V1 within hackathon time constraints</li>
+                <li>Validate with a real team during active collaboration</li>
+            </ul>
+        </section>
+
+        <!-- My Role -->
+        <section class="section" id="role">
+            <h2>My Role</h2>
+            <p>
+                I owned both product thinking and execution for this project. This included identifying the problem space, scoping the V1, designing the user experience, building the front-end interface, and implementing a lightweight backend to persist and sync updates.
+            </p>
+            <p>
+                The goal was to create a complete, working product that could be tested and validated within the hackathon timeframe.
+            </p>
+        </section>
+
+        <!-- Key Product Decisions -->
+        <section class="section" id="decisions">
+            <h2>Key Product Decisions</h2>
+            <ul class="highlight-list">
+                <li><strong>No authentication:</strong> Eliminated account creation to reduce friction</li>
+                <li><strong>Structured inputs:</strong> Used specific fields instead of open chat to improve clarity</li>
+                <li><strong>Real-time sharing:</strong> Enabled instant visibility for all participants</li>
+                <li><strong>Single link access:</strong> Made joining as simple as clicking a link</li>
+                <li><strong>Limited scope:</strong> Focused on core functionality to deliver a working V1 quickly</li>
+            </ul>
+        </section>
+
+        <!-- Solution Breakdown -->
+        <section class="section" id="solution">
+            <h2>Solution Breakdown</h2>
+            <p>
+                The interface focuses on four key questions that matter most during short-term collaboration:
+            </p>
+            <ul>
+                <li>What is your name and role?</li>
+                <li>What did you work on?</li>
+                <li>What are you working on next?</li>
+                <li>Are there any blockers?</li>
+            </ul>
+            <p>
+                Team members enter their updates, and everyone sees changes instantly through a shared URL. No login, no setup, no configuration.
+            </p>
+        </section>
+
+        <!-- Outcome and Learnings -->
+        <section class="section" id="outcome">
+            <h2>Outcome and Learnings</h2>
+            <p>
+                PulseCheck was tested and actively used by my hackathon team during live collaboration. Sharing one link enabled quick alignment without any onboarding or explanation.
+            </p>
+            <p>
+                Key learnings from this experiment:
+            </p>
+            <ul class="highlight-list">
+                <li>Simplicity matters most in short-term collaboration tools</li>
+                <li>Structured updates significantly improve clarity over open chat</li>
+                <li>A focused V1 can deliver real value without feature overload</li>
+                <li>Reducing onboarding time directly impacts team velocity</li>
+            </ul>
+        </section>
+
+        <!-- What I Would Improve Next -->
+        <section class="section" id="improvements">
+            <h2>What I Would Improve Next</h2>
+            <p>
+                Given more time, I would focus on these areas to enhance the product:
+            </p>
+            <ul>
+                <li>Add optional persistence for teams that want to track progress across days</li>
+                <li>Improve mobile responsiveness for on-the-go updates</li>
+                <li>Include a simple voting mechanism for prioritizing blockers</li>
+                <li>Add export functionality to capture stand-up summaries</li>
+                <li>Conduct more user testing with different types of short-term teams</li>
+            </ul>
+        </section>
+
+        <!-- Call to Action -->
+        <section class="cta-section">
+            <a href="https://pulsecheckhackhathon.netlify.app/" class="cta-button" target="_blank" rel="noopener">
+                View Live Project
+            </a>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Personal Project • Hackathon V1 • Product Experiment</p>
+        </div>
+    </footer>
+
+    <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        }
+        
+        // Toggle theme on button click
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                localStorage.setItem('theme', 'light');
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+        });
+        
+        // Lagos Clock Functionality
+        function updateLagosClock() {
+            const clockElement = document.getElementById('lagos-clock');
+            const now = new Date();
+            
+            // Format to Lagos time (Africa/Lagos is GMT+1)
+            const lagosTime = now.toLocaleTimeString('en-US', {
+                timeZone: 'Africa/Lagos',
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            
+            clockElement.textContent = lagosTime;
+        }
+        
+        // Initialize clock and update every second
+        updateLagosClock();
+        setInterval(updateLagosClock, 1000);
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href === '#') return;
+                
+                const targetElement = document.querySelector(href);
+                if (targetElement) {
+                    e.preventDefault();
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
