@@ -1,679 +1,1493 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <title>FinTech case study · spending awareness</title>
-  <!-- fonts & icons (Inter + system) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Everyday Spending Insights | FinTech Product Case Study</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #fafaf9;
+            --bg-tertiary: #f5f5f4;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --text-tertiary: #787878;
+            --text-muted: #999999;
+            --border-primary: #e5e5e4;
+            --border-secondary: #eeeeed;
+            --border-subtle: #f0f0ef;
+            --accent: #1A4D8F;
+            --accent-subtle: #f2f6fa;
+            --accent-muted: #d9e4f0;
+            --accent-hover: #143B6B;
+            --accent-text: #1A4D8F;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.06);
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 10px;
+            --transition-fast: 0.15s ease;
+            --transition-smooth: 0.25s ease;
+            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+            --font-serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+            --max-content: 720px;
+            --max-wide: 960px;
+            --max-grid: 1080px;
+        }
 
-    :root {
-      --primary-deep: #1F3A8A;
-      --primary-accent: #2563EB;
-      --bg-light: #F8FAFC;
-      --card-white: #FFFFFF;
-      --text-dark: #111827;
-      --text-mid: #6B7280;
-      --border-light: #E2E8F0;
-      --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.04);
-      --shadow-hover: 0 20px 30px -10px rgba(31, 58, 138, 0.15), 0 8px 15px rgba(0,0,0,0.05);
-      --radius-card: 24px;
-      --radius-btn: 40px;
-      --transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
-    }
+        body.dark-mode {
+            --bg-primary: #1c1c1c;
+            --bg-secondary: #222222;
+            --bg-tertiary: #292929;
+            --text-primary: #e4e4e4;
+            --text-secondary: #b0b0b0;
+            --text-tertiary: #909090;
+            --text-muted: #777777;
+            --border-primary: #383838;
+            --border-secondary: #333333;
+            --border-subtle: #2e2e2e;
+            --accent: #6A9FCE;
+            --accent-subtle: #1a2535;
+            --accent-muted: #233044;
+            --accent-hover: #7AAED4;
+            --accent-text: #6A9FCE;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+            --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
 
-    body {
-      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background-color: var(--bg-light);
-      color: var(--text-dark);
-      line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
-      width: 100%;
-      overflow-x: hidden;
-    }
+        @media (prefers-color-scheme: dark) {
+            body:not(.light-mode) {
+                --bg-primary: #1c1c1c;
+                --bg-secondary: #222222;
+                --bg-tertiary: #292929;
+                --text-primary: #e4e4e4;
+                --text-secondary: #b0b0b0;
+                --text-tertiary: #909090;
+                --text-muted: #777777;
+                --border-primary: #383838;
+                --border-secondary: #333333;
+                --border-subtle: #2e2e2e;
+                --accent: #6A9FCE;
+                --accent-subtle: #1a2535;
+                --accent-muted: #233044;
+                --accent-hover: #7AAED4;
+                --accent-text: #6A9FCE;
+                --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+                --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.3);
+            }
+        }
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    /* ----- top bar ----- */
-    .top-bar {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background-color: rgba(255,255,255,0.85);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border-light);
-      padding: 8px 0;
-    }
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+            overflow-x: hidden;
+            max-width: 100vw;
+        }
 
-    .top-bar .container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      min-height: 60px;
-    }
+        body {
+            font-family: var(--font-sans);
+            color: var(--text-primary);
+            background-color: var(--bg-primary);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transition: background-color var(--transition-smooth), color var(--transition-smooth);
+            min-height: 100vh;
+            overflow-x: hidden;
+            max-width: 100vw;
+            position: relative;
+        }
 
-    .back-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: transparent;
-      border: 1px solid var(--border-light);
-      color: var(--primary-deep);
-      font-weight: 500;
-      font-size: 0.95rem;
-      padding: 8px 20px;
-      border-radius: var(--radius-btn);
-      transition: var(--transition);
-      text-decoration: none;
-    }
+        img,
+        svg {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
 
-    .back-btn i {
-      font-size: 1rem;
-      transition: transform 0.2s;
-    }
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
 
-    .back-btn:hover {
-      background: #EFF6FF;
-      border-color: var(--primary-accent);
-      transform: scale(1.02);
-    }
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border-subtle);
+            height: 52px;
+            display: flex;
+            align-items: center;
+            transition: background-color var(--transition-smooth), border-color var(--transition-smooth);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
 
-    .back-btn span {
-      display: inline;
-    }
+        .top-bar-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: var(--max-grid);
+            margin: 0 auto;
+            padding: 0 clamp(1rem, 3vw, 2rem);
+            height: 100%;
+            min-width: 0;
+        }
 
-    /* mobile: only arrow */
-    @media (max-width: 640px) {
-      .back-btn span {
-        display: none;
-      }
-      .back-btn {
-        padding: 10px 16px;
-      }
-    }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: clamp(0.8rem, 1.2vw, 0.875rem);
+            font-weight: 500;
+            transition: color var(--transition-fast);
+            letter-spacing: -0.01em;
+            white-space: nowrap;
+            flex-shrink: 0;
+            min-width: 0;
+        }
 
-    .badge-desktop, .badge-mobile {
-      font-weight: 500;
-      font-size: 0.9rem;
-      color: var(--primary-deep);
-      background: #EFF6FF;
-      padding: 6px 18px;
-      border-radius: var(--radius-btn);
-      border: 1px solid var(--border-light);
-      white-space: nowrap;
-    }
+        .back-link:hover {
+            color: var(--accent-text);
+        }
 
-    .badge-mobile {
-      display: none;
-    }
+        .back-link svg {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            transition: transform var(--transition-fast);
+        }
 
-    @media (max-width: 640px) {
-      .badge-desktop {
-        display: none;
-      }
-      .badge-mobile {
-        display: inline-block;
-      }
-    }
+        .back-link:hover svg {
+            transform: translateX(-2px);
+        }
 
-    /* ----- hero ----- */
-    .hero {
-      padding: 64px 0 48px;
-      background: var(--bg-light);
-    }
+        .back-link .back-text {
+            display: inline;
+        }
 
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 48px;
-      align-items: center;
-    }
+        .top-bar-actions {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
+            min-width: 0;
+        }
 
-    @media (max-width: 800px) {
-      .hero-grid {
-        grid-template-columns: 1fr;
-        gap: 32px;
-      }
-    }
+        .theme-toggle-desktop {
+            background: none;
+            border: 1px solid var(--border-secondary);
+            cursor: pointer;
+            color: var(--text-secondary);
+            padding: 7px;
+            border-radius: var(--radius-sm);
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-fast);
+            flex-shrink: 0;
+        }
 
-    .hero-content h1 {
-      font-size: 2.6rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      line-height: 1.2;
-      margin-bottom: 24px;
-      color: var(--text-dark);
-    }
+        .theme-toggle-desktop:hover {
+            color: var(--text-primary);
+            border-color: var(--border-primary);
+            background: var(--bg-tertiary);
+        }
 
-    @media (max-width: 600px) {
-      .hero-content h1 {
-        font-size: 2rem;
-      }
-    }
+        .theme-toggle-desktop svg {
+            width: 20px;
+            height: 20px;
+        }
 
-    .hero-intro p {
-      font-size: 1.1rem;
-      color: var(--text-mid);
-      margin-bottom: 1rem;
-    }
+        .hamburger-btn {
+            display: none;
+            background: none;
+            border: 1px solid var(--border-secondary);
+            cursor: pointer;
+            color: var(--text-secondary);
+            padding: 7px;
+            border-radius: var(--radius-sm);
+            width: 34px;
+            height: 34px;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-fast);
+            flex-shrink: 0;
+        }
 
-    .hero-btn {
-      margin-top: 24px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--primary-deep);
-      color: white;
-      border: none;
-      padding: 12px 28px;
-      border-radius: var(--radius-btn);
-      font-weight: 600;
-      cursor: pointer;
-      transition: var(--transition);
-      border: 1px solid transparent;
-    }
+        .hamburger-btn:hover {
+            color: var(--text-primary);
+            border-color: var(--border-primary);
+            background: var(--bg-tertiary);
+        }
 
-    .hero-btn:hover {
-      background: var(--primary-accent);
-      transform: scale(1.03);
-    }
+        .hamburger-btn svg {
+            width: 18px;
+            height: 18px;
+        }
 
-    /* hero illustration (phone + chart) */
-    .hero-illustration {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 52px;
+            right: 0;
+            width: 260px;
+            max-width: 100vw;
+            background: var(--bg-primary);
+            border-left: 1px solid var(--border-primary);
+            border-bottom: 1px solid var(--border-primary);
+            box-shadow: var(--shadow-md);
+            z-index: 999;
+            flex-direction: column;
+            padding: 1rem 0;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            max-height: calc(100vh - 52px);
+            overflow-y: auto;
+        }
 
-    .phone-chart {
-      width: 100%;
-      max-width: 320px;
-      background: white;
-      border-radius: 36px;
-      padding: 20px 16px;
-      box-shadow: 0 20px 30px -10px rgba(31,58,138,0.2), 0 8px 15px rgba(0,0,0,0.05);
-      border: 1px solid var(--border-light);
-    }
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
 
-    .phone-chart .notch {
-      width: 100px;
-      height: 24px;
-      background: #1F3A8A;
-      border-radius: 40px;
-      margin: 0 auto 20px;
-      opacity: 0.3;
-    }
+        .mobile-menu a {
+            display: block;
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 500;
+            border-bottom: 1px solid var(--border-subtle);
+            transition: background var(--transition-fast);
+            white-space: nowrap;
+        }
 
-    .phone-chart .bar-set {
-      display: flex;
-      justify-content: space-around;
-      align-items: flex-end;
-      height: 140px;
-      margin-bottom: 20px;
-    }
+        .mobile-menu a:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
 
-    .phone-chart .bar {
-      width: 30px;
-      background: var(--primary-deep);
-      border-radius: 12px 12px 6px 6px;
-      opacity: 0.7;
-    }
+        .mobile-menu .mobile-theme-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 0.8rem 1.5rem;
+            background: none;
+            border: none;
+            border-bottom: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
+            gap: 0;
+            transition: background var(--transition-fast);
+            font-family: var(--font-sans);
+        }
 
-    .bar1 { height: 70px; background: #1F3A8A; }
-    .bar2 { height: 110px; background: #2563EB; }
-    .bar3 { height: 50px; background: #3B82F6; }
-    .bar4 { height: 90px; background: #1F3A8A; }
+        .mobile-menu .mobile-theme-toggle:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
 
-    .phone-chart .mini-label {
-      display: flex;
-      justify-content: space-between;
-      color: var(--text-mid);
-      font-size: 0.7rem;
-      font-weight: 500;
-      margin-top: 12px;
-    }
+        .mobile-menu .mobile-theme-toggle svg {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
 
-    /* sections */
-    .section {
-      padding: 60px 0;
-    }
+        .case-nav {
+            position: sticky;
+            top: 52px;
+            z-index: 998;
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border-subtle);
+            transition: background-color var(--transition-smooth), border-color var(--transition-smooth);
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
 
-    .section-header {
-      margin-bottom: 40px;
-    }
+        .case-nav-inner {
+            max-width: var(--max-grid);
+            margin: 0 auto;
+            padding: 0 clamp(1rem, 3vw, 2rem);
+            display: flex;
+            gap: 0;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            min-width: 0;
+        }
 
-    .section-header h2 {
-      font-size: 2rem;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      margin-bottom: 8px;
-      color: var(--text-dark);
-    }
+        .case-nav-inner::-webkit-scrollbar {
+            display: none;
+        }
 
-    .section-header p {
-      font-size: 1.1rem;
-      color: var(--text-mid);
-      max-width: 700px;
-    }
+        .case-nav-link {
+            display: inline-block;
+            padding: 14px 18px;
+            text-decoration: none;
+            color: var(--text-tertiary);
+            font-size: clamp(0.78rem, 1.1vw, 0.85rem);
+            font-weight: 500;
+            white-space: nowrap;
+            border-bottom: 2px solid transparent;
+            transition: all var(--transition-fast);
+            letter-spacing: -0.01em;
+            position: relative;
+            top: 1px;
+            flex-shrink: 0;
+        }
 
-    /* cards row (flex wrap, horizontal on large, vertical on mobile) */
-    .cards-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 24px;
-      margin-top: 20px;
-    }
+        .case-nav-link:hover {
+            color: var(--text-primary);
+        }
 
-    .card {
-      flex: 1 1 240px;               /* grow, basis for min width */
-      min-width: 240px;
-      background: var(--card-white);
-      border-radius: var(--radius-card);
-      padding: 28px 24px;
-      border: 1px solid var(--border-light);
-      box-shadow: var(--shadow-sm);
-      transition: var(--transition);
-      display: flex;
-      flex-direction: column;
-    }
+        .case-nav-link.active {
+            color: var(--accent-text);
+            border-bottom-color: var(--accent);
+        }
 
-    .card:hover {
-      transform: translateY(-6px);
-      box-shadow: var(--shadow-hover);
-      border-color: var(--primary-accent);
-    }
+        .page-content {
+            padding-top: 0;
+            min-width: 0;
+        }
 
-    .card h3 {
-      font-size: 1.2rem;
-      font-weight: 600;
-      margin-bottom: 16px;
-      color: var(--text-dark);
-    }
+        .hero {
+            padding: clamp(3rem, 7vw, 6rem) clamp(1rem, 3vw, 2rem) clamp(2.5rem, 5vw, 4.5rem);
+            max-width: var(--max-wide);
+            margin: 0 auto;
+            border-bottom: 1px solid var(--border-subtle);
+            min-width: 0;
+        }
 
-    .card p {
-      color: var(--text-mid);
-      font-size: 0.95rem;
-      line-height: 1.6;
-      flex: 1;
-    }
+        .hero-label {
+            display: inline-block;
+            font-size: clamp(0.75rem, 1vw, 0.8rem);
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: var(--accent-text);
+            margin-bottom: clamp(1rem, 2vw, 1.5rem);
+        }
 
-    /* text block (for long reads) */
-    .text-block {
-      background: var(--card-white);
-      border-radius: var(--radius-card);
-      padding: 2rem;
-      border: 1px solid var(--border-light);
-      box-shadow: var(--shadow-sm);
-    }
+        .hero h1 {
+            font-family: var(--font-sans);
+            font-size: clamp(1.8rem, 4.5vw, 3rem);
+            font-weight: 700;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            color: var(--text-primary);
+            margin-bottom: clamp(1rem, 2vw, 1.5rem);
+            max-width: 100%;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
+        }
 
-    .text-block p {
-      color: var(--text-mid);
-      font-size: 1rem;
-      margin-bottom: 1.2rem;
-    }
+        .hero-subtitle {
+            font-family: var(--font-serif);
+            font-size: clamp(1rem, 1.6vw, 1.2rem);
+            line-height: 1.6;
+            color: var(--text-secondary);
+            max-width: 620px;
+            font-weight: 400;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            margin-bottom: clamp(1.5rem, 3vw, 2rem);
+        }
 
-    .read-more-btn {
-      background: none;
-      border: none;
-      color: var(--primary-deep);
-      font-weight: 600;
-      font-size: 0.95rem;
-      padding: 8px 0 0;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: var(--transition);
-    }
+        .hero-cta {
+            display: inline-block;
+            font-family: var(--font-sans);
+            font-size: clamp(0.85rem, 1.1vw, 0.95rem);
+            font-weight: 600;
+            color: #ffffff;
+            background: var(--accent);
+            padding: 0.7rem 1.6rem;
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            transition: background var(--transition-fast);
+            letter-spacing: -0.01em;
+        }
 
-    .read-more-btn:hover {
-      gap: 10px;
-      color: var(--primary-accent);
-    }
+        .hero-cta:hover {
+            background: var(--accent-hover);
+        }
 
-    /* modal */
-    .modal-overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 2000;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s ease, visibility 0.3s;
-    }
+        .hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: clamp(1rem, 2vw, 2rem);
+            margin-top: clamp(1.5rem, 3vw, 2.5rem);
+            padding-top: clamp(1rem, 2vw, 1.5rem);
+            border-top: 1px solid var(--border-subtle);
+            min-width: 0;
+        }
 
-    .modal-overlay.show {
-      opacity: 1;
-      visibility: visible;
-    }
+        .hero-meta-item {
+            font-size: clamp(0.78rem, 1vw, 0.85rem);
+            color: var(--text-tertiary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            min-width: 0;
+        }
 
-    .modal-content {
-      background: white;
-      max-width: 540px;
-      width: 90%;
-      max-height: 80vh;
-      overflow-y: auto;
-      border-radius: 32px;
-      padding: 2rem;
-      box-shadow: 0 30px 60px rgba(0,0,0,0.3);
-      position: relative;
-      transform: scale(0.95);
-      transition: transform 0.3s ease;
-    }
+        .hero-meta-item strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
 
-    .modal-overlay.show .modal-content {
-      transform: scale(1);
-    }
+        .section {
+            padding: clamp(2.5rem, 5vw, 4.5rem) clamp(1rem, 3vw, 2rem);
+            max-width: var(--max-wide);
+            margin: 0 auto;
+            border-bottom: 1px solid var(--border-subtle);
+            min-width: 0;
+        }
 
-    .modal-close {
-      position: absolute;
-      top: 1rem; right: 1.5rem;
-      background: none;
-      border: none;
-      font-size: 2rem;
-      cursor: pointer;
-      color: var(--text-mid);
-      line-height: 1;
-    }
-    .modal-close:hover { color: var(--text-dark); }
+        .section:last-of-type {
+            border-bottom: none;
+        }
 
-    .modal-body {
-      margin-top: 0.5rem;
-      color: var(--text-mid);
-    }
+        .section-alt {
+            background: var(--bg-secondary);
+            max-width: none;
+            border-bottom: 1px solid var(--border-subtle);
+            padding: clamp(2.5rem, 5vw, 4.5rem) clamp(1rem, 3vw, 2rem);
+        }
 
-    .modal-body p {
-      margin-bottom: 1rem;
-    }
+        .section-alt .section-inner {
+            max-width: var(--max-wide);
+            margin: 0 auto;
+            padding: 0;
+            min-width: 0;
+        }
 
-    /* hidden full text container */
-    .full-content {
-      display: none;
-    }
+        .section-header {
+            margin-bottom: clamp(2rem, 3.5vw, 2.8rem);
+            min-width: 0;
+        }
 
-    /* footer */
-    .footer {
-      text-align: center;
-      padding: 3rem 0 2rem;
-      color: var(--text-mid);
-      border-top: 1px solid var(--border-light);
-    }
+        .section-tag {
+            display: inline-block;
+            font-size: clamp(0.7rem, 0.9vw, 0.75rem);
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--accent-text);
+            margin-bottom: 0.6rem;
+        }
 
-    /* fade up animation */
-    .fade-up {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
+        .section-header h2 {
+            font-family: var(--font-sans);
+            font-size: clamp(1.4rem, 3vw, 2rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            margin-bottom: 0.6rem;
+            max-width: 100%;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
+        }
 
-    .fade-up.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+        .section-header p {
+            font-family: var(--font-serif);
+            font-size: clamp(0.95rem, 1.3vw, 1.05rem);
+            color: var(--text-secondary);
+            max-width: 600px;
+            line-height: 1.6;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
 
-    @media (max-width: 600px) {
-      .container { padding: 0 20px; }
-      .card { min-width: 100%; }
-    }
-  </style>
+        .bordered-block {
+            border: 1px solid var(--border-primary);
+            border-left: 3px solid var(--accent);
+            padding: clamp(1.2rem, 2vw, 1.8rem);
+            margin-bottom: clamp(1.5rem, 2.5vw, 2rem);
+            background: var(--bg-primary);
+            transition: background-color var(--transition-smooth), border-color var(--transition-smooth);
+            min-width: 0;
+        }
+
+        .bordered-block h3 {
+            font-family: var(--font-sans);
+            font-size: clamp(1rem, 1.4vw, 1.15rem);
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            color: var(--text-primary);
+            margin-bottom: 0.6rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .bordered-block p {
+            font-family: var(--font-serif);
+            font-size: clamp(0.88rem, 1.1vw, 0.95rem);
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 0.6rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .bordered-block p:last-child {
+            margin-bottom: 0;
+        }
+
+        .bordered-block ul {
+            list-style: none;
+            padding: 0;
+            margin: 0.5rem 0 0;
+        }
+
+        .bordered-block ul li {
+            font-family: var(--font-serif);
+            font-size: clamp(0.88rem, 1.1vw, 0.95rem);
+            color: var(--text-secondary);
+            line-height: 1.7;
+            padding: 0.3rem 0 0.3rem 1.3rem;
+            position: relative;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .bordered-block ul li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.8rem;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: var(--text-muted);
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: clamp(1.5rem, 2vw, 2rem);
+            margin-bottom: 0;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: clamp(1rem, 2vw, 1.5rem);
+            margin-top: clamp(1.5rem, 2.5vw, 2rem);
+        }
+
+        .insight-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: clamp(1rem, 1.8vw, 1.5rem);
+            margin-top: clamp(1rem, 2vw, 1.5rem);
+        }
+
+        .solution-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: clamp(1rem, 1.8vw, 1.5rem);
+            margin-top: clamp(1rem, 2vw, 1.5rem);
+        }
+
+        .principle-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: clamp(1rem, 1.8vw, 1.5rem);
+            margin-top: clamp(1rem, 2vw, 1.5rem);
+        }
+
+        .tradeoff-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: clamp(1rem, 1.8vw, 1.5rem);
+            margin-top: clamp(1rem, 2vw, 1.5rem);
+        }
+
+        .scenario-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: clamp(1rem, 1.8vw, 1.5rem);
+            margin-top: clamp(1rem, 2vw, 1.5rem);
+        }
+
+        .stat-item {
+            padding: clamp(1rem, 1.5vw, 1.25rem);
+            border: 1px solid var(--border-secondary);
+            background: var(--bg-primary);
+            text-align: center;
+            transition: background-color var(--transition-smooth), border-color var(--transition-smooth);
+            min-width: 0;
+        }
+
+        .stat-item .stat-icon {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-text);
+        }
+
+        .stat-item h4 {
+            font-family: var(--font-sans);
+            font-size: clamp(0.85rem, 1.1vw, 0.95rem);
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.3rem;
+            letter-spacing: -0.01em;
+        }
+
+        .stat-item p {
+            font-family: var(--font-serif);
+            font-size: clamp(0.78rem, 0.95vw, 0.85rem);
+            color: var(--text-tertiary);
+            line-height: 1.5;
+        }
+
+        .problem-card {
+            border: 1px solid var(--border-primary);
+            padding: clamp(1.2rem, 1.8vw, 1.6rem);
+            background: var(--bg-primary);
+            transition: background-color var(--transition-smooth), border-color var(--transition-smooth);
+            min-width: 0;
+        }
+
+        .problem-card .problem-num {
+            font-family: var(--font-sans);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--accent-text);
+            margin-bottom: 0.5rem;
+        }
+
+        .problem-card h4 {
+            font-family: var(--font-sans);
+            font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+            margin-bottom: 0.5rem;
+        }
+
+        .problem-card p {
+            font-family: var(--font-serif);
+            font-size: clamp(0.82rem, 1vw, 0.9rem);
+            color: var(--text-secondary);
+            line-height: 1.6;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .insight-item {
+            border: 1px solid var(--border-primary);
+            padding: clamp(1.2rem, 1.8vw, 1.6rem);
+            background: var(--bg-primary);
+            transition: background-color var(--transition-smooth), border-color var(--transition-smooth);
+            min-width: 0;
+        }
+
+        .insight-item h4 {
+            font-family: var(--font-sans);
+            font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+            margin-bottom: 0.5rem;
+        }
+
+        .insight-item p {
+            font-family: var(--font-serif);
+            font-size: clamp(0.82rem, 1vw, 0.9rem);
+            color: var(--text-secondary);
+            line-height: 1.6;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .principle-item {
+            border: 1px solid var(--border-primary);
+            border-left: 3px solid var(--accent);
+            padding: clamp(1.2rem, 1.8vw, 1.6rem);
+            background: var(--bg-primary);
+            transition: background-color var(--transition-smooth), border-color var(--transition-smooth);
+            min-width: 0;
+        }
+
+        .principle-item h4 {
+            font-family: var(--font-sans);
+            font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+            margin-bottom: 0.5rem;
+        }
+
+        .principle-item p {
+            font-family: var(--font-serif);
+            font-size: clamp(0.82rem, 1vw, 0.9rem);
+            color: var(--text-secondary);
+            line-height: 1.6;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .tradeoff-item {
+            border: 1px solid var(--border-primary);
+            padding: clamp(1.2rem, 1.8vw, 1.6rem);
+            background: var(--bg-primary);
+            transition: background-color var(--transition-smooth), border-color var(--transition-smooth);
+            min-width: 0;
+        }
+
+        .tradeoff-item h4 {
+            font-family: var(--font-sans);
+            font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+            margin-bottom: 0.5rem;
+        }
+
+        .tradeoff-item p {
+            font-family: var(--font-serif);
+            font-size: clamp(0.82rem, 1vw, 0.9rem);
+            color: var(--text-secondary);
+            line-height: 1.6;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .scenario-item {
+            border: 1px solid var(--border-primary);
+            padding: clamp(1.2rem, 1.8vw, 1.6rem);
+            background: var(--bg-primary);
+            transition: background-color var(--transition-smooth), border-color var(--transition-smooth);
+            min-width: 0;
+        }
+
+        .scenario-item .scenario-head {
+            margin-bottom: 0.8rem;
+        }
+
+        .scenario-item .scenario-num {
+            font-family: var(--font-sans);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--accent-text);
+            margin-bottom: 0.3rem;
+        }
+
+        .scenario-item h4 {
+            font-family: var(--font-sans);
+            font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+            margin-bottom: 0.3rem;
+        }
+
+        .scenario-item p {
+            font-family: var(--font-serif);
+            font-size: clamp(0.82rem, 1vw, 0.9rem);
+            color: var(--text-secondary);
+            line-height: 1.6;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .solution-card {
+            border: 1px solid var(--border-primary);
+            padding: clamp(1.2rem, 1.8vw, 1.6rem);
+            background: var(--bg-primary);
+            transition: background-color var(--transition-smooth), border-color var(--transition-smooth);
+            min-width: 0;
+        }
+
+        .solution-card h4 {
+            font-family: var(--font-sans);
+            font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+            margin-bottom: 0.5rem;
+        }
+
+        .solution-card p {
+            font-family: var(--font-serif);
+            font-size: clamp(0.82rem, 1vw, 0.9rem);
+            color: var(--text-secondary);
+            line-height: 1.6;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .case-footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-subtle);
+            padding: clamp(1.5rem, 2.5vw, 2rem) clamp(1rem, 3vw, 2rem);
+            text-align: center;
+        }
+
+        .case-footer .copyright {
+            font-size: clamp(0.75rem, 0.9vw, 0.8rem);
+            color: var(--text-muted);
+            letter-spacing: -0.01em;
+        }
+
+        @media (max-width: 1024px) {
+            .insight-grid,
+            .principle-grid,
+            .scenario-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .back-link .back-text {
+                display: none;
+            }
+            .theme-toggle-desktop {
+                display: none;
+            }
+            .hamburger-btn {
+                display: flex;
+            }
+            .mobile-menu {
+                display: flex;
+            }
+            .case-nav {
+                display: none;
+            }
+            .hero-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            .hero-meta-item {
+                white-space: normal;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .hero {
+                padding-top: 5rem;
+            }
+
+            .insight-grid,
+            .principle-grid,
+            .scenario-grid,
+            .tradeoff-grid {
+                display: flex;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+                gap: 0.75rem;
+                padding-bottom: 0.6rem;
+            }
+            .insight-grid::-webkit-scrollbar,
+            .principle-grid::-webkit-scrollbar,
+            .scenario-grid::-webkit-scrollbar,
+            .tradeoff-grid::-webkit-scrollbar {
+                display: none;
+            }
+            .insight-grid .insight-item,
+            .principle-grid .principle-item,
+            .scenario-grid .scenario-item,
+            .tradeoff-grid .tradeoff-item {
+                flex: 0 0 78%;
+                min-width: 260px;
+                scroll-snap-align: start;
+            }
+
+            .solution-grid {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .problem-grid {
+                gap: 0.5rem;
+            }
+            .problem-card {
+                padding: 0.6rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: clamp(1.4rem, 7vw, 1.8rem);
+            }
+            .section-header h2 {
+                font-size: clamp(1.2rem, 5vw, 1.5rem);
+            }
+            .mobile-menu {
+                width: 100%;
+                right: 0;
+            }
+            .insight-grid .insight-item,
+            .principle-grid .principle-item,
+            .scenario-grid .scenario-item,
+            .tradeoff-grid .tradeoff-item {
+                flex: 0 0 82%;
+                min-width: 250px;
+            }
+            .problem-card {
+                padding: 0.5rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .insight-grid .insight-item,
+            .principle-grid .principle-item,
+            .scenario-grid .scenario-item,
+            .tradeoff-grid .tradeoff-item {
+                flex: 0 0 84%;
+                min-width: 230px;
+            }
+            .problem-grid {
+                gap: 0.3rem;
+            }
+            .problem-card {
+                padding: 0.35rem;
+            }
+        }
+
+        a:focus-visible,
+        button:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 3px;
+            border-radius: 2px;
+        }
+
+        .case-nav-link:focus-visible {
+            outline-offset: -2px;
+            border-radius: 0;
+        }
+
+        @media print {
+            .top-bar,
+            .case-nav,
+            .theme-toggle-desktop,
+            .hamburger-btn,
+            .mobile-menu {
+                display: none !important;
+            }
+            body {
+                font-size: 12pt;
+                color: #000;
+                background: #fff;
+            }
+            .section {
+                page-break-inside: avoid;
+                border-bottom: 1px solid #ccc;
+                padding: 1.5rem 0;
+            }
+            .hero {
+                border-bottom: 1px solid #ccc;
+                padding: 1rem 0;
+            }
+        }
+    </style>
 </head>
 <body>
-  <!-- top bar -->
-  <div class="top-bar">
-    <div class="container">
-      <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> <span>Back to Portfolio</span></a>
-      <div>
-        <span class="badge-desktop">FinTech Case Study</span>
-        <span class="badge-mobile">FinTech</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- HERO SECTION -->
-  <section class="hero fade-up" id="hero">
-    <div class="container">
-      <div class="hero-grid">
-        <div class="hero-content">
-          <h1>Understanding Everyday Spending in Mobile Banking</h1>
-          <div class="hero-intro">
-            <p>Mobile banking apps make it easy to move money, but they rarely help users understand how they spend it. Many users check their balances frequently but still struggle to track where their money goes over time.</p>
-            <p>This concept explores how mobile banking apps could introduce lightweight spending insights that help users build awareness of their habits without adding complexity.</p>
-          </div>
-          <button class="hero-btn" onclick="document.getElementById('problem-context').scrollIntoView({behavior:'smooth'})">
-            Explore concept <i class="fas fa-arrow-down"></i>
-          </button>
-        </div>
-        <div class="hero-illustration">
-          <div class="phone-chart">
-            <div class="notch"></div>
-            <div class="bar-set">
-              <div class="bar bar1"></div>
-              <div class="bar bar2"></div>
-              <div class="bar bar3"></div>
-              <div class="bar bar4"></div>
+    <header class="top-bar" id="topBar" role="banner">
+        <div class="top-bar-inner">
+            <a href="index.html" class="back-link" aria-label="Back to portfolio">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                <span class="back-text">Portfolio</span>
+            </a>
+            <div class="top-bar-actions">
+                <button class="theme-toggle-desktop" id="themeToggleDesktop" aria-label="Toggle theme" title="Toggle theme">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                </button>
+                <button class="hamburger-btn" id="hamburgerBtn" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                </button>
             </div>
-            <div class="mini-label">
-              <span>M T W T F S</span>
-              <span><i class="fas fa-chevron-up" style="color:#2563EB;"></i> +12%</span>
+        </div>
+    </header>
+
+    <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation">
+        <a href="#hero">Overview</a>
+        <a href="#problem-context">Problem</a>
+        <a href="#user-research">Research</a>
+        <a href="#solution-concept">Solution</a>
+        <a href="#design-principles">Design</a>
+        <a href="#trade-offs">Trade-offs</a>
+        <a href="#reflection">Reflection</a>
+        <button class="mobile-theme-toggle" id="mobileThemeToggle" aria-label="Toggle theme">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </button>
+    </nav>
+
+    <nav class="case-nav" id="caseNav" aria-label="Case study sections">
+        <div class="case-nav-inner">
+            <a href="#hero" class="case-nav-link active">Overview</a>
+            <a href="#problem-context" class="case-nav-link">Problem</a>
+            <a href="#user-research" class="case-nav-link">Research</a>
+            <a href="#solution-concept" class="case-nav-link">Solution</a>
+            <a href="#trade-offs" class="case-nav-link">Trade-offs</a>
+            <a href="#reflection" class="case-nav-link">Reflection</a>
+        </div>
+    </nav>
+
+    <main class="page-content" id="mainContent">
+        <section class="hero" id="hero" aria-labelledby="hero-heading">
+            <p class="hero-label">FinTech Product Case Study</p>
+            <h1 id="hero-heading">Understanding Everyday Spending in Mobile Banking</h1>
+            <p class="hero-subtitle">
+                A product concept exploring how mobile banking can turn transaction history into lightweight, understandable spending insights.
+            </p>
+            <a href="#problem-context" class="hero-cta">Explore case study</a>
+            <div class="hero-meta">
+                
+                <span class="hero-meta-item"><strong>Focus:</strong> FinTech / Financial Awareness</span>
+                <span class="hero-meta-item"><strong>Status:</strong> Product Concept</span>
+                <span class="hero-meta-item"><strong>Scope:</strong> Mobile Banking / Spending Insights</span>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+        </section>
 
-  <!-- PROBLEM CONTEXT -->
-  <section id="problem-context" class="section fade-up">
-    <div class="container">
-      <div class="section-header">
-        <h2>Problem Context</h2>
-        <p>Mobile banking adoption has grown rapidly, yet spending understanding lags behind.</p>
-      </div>
-      <div class="text-block" id="contextBlock">
-        <p>Apps such as OPay, PalmPay, Kuda, and Revolut have made it easier than ever to send money, pay bills, and manage accounts. But most users still struggle to understand their spending patterns. Transaction lists provide information, not interpretation.</p>
-        <!-- full text hidden for modal -->
-        <div id="fullContext" class="full-content">
-          <p>Apps such as OPay, PalmPay, Kuda, and Revolut have made it easier than ever to send money, pay bills, and manage accounts. But most users still struggle to understand their spending patterns. Transaction lists provide information, not interpretation. Users can see what they spent, but they cannot easily see patterns. This gap creates an opportunity for mobile banking to move from transaction tools toward financial insight systems.</p>
-          <p>Deeper exploration reveals that users often feel overwhelmed by raw data and would benefit from automated analysis that highlights trends, anomalies, and opportunities to save. The problem is not lack of data, but lack of meaningful synthesis.</p>
-        </div>
-        <button class="read-more-btn" data-target="fullContext"><i class="fas fa-chevron-right"></i> Read more</button>
-      </div>
-    </div>
-  </section>
+        <section class="section" id="problem-context" aria-labelledby="context-heading">
+            <div class="section-header">
+                <p class="section-tag">Problem Context</p>
+                <h2 id="context-heading">Where Mobile Banking Falls Short</h2>
+                <p>
+                    Mobile banking adoption has made it easier to send money, pay bills, and manage accounts. Apps such as OPay, PalmPay, Kuda, and Revolut make transactions convenient, but transaction lists primarily provide information rather than interpretation.
+                </p>
+            </div>
+            <div class="bordered-block" style="max-width: 680px;">
+                <p>Users can see what they spent, but they cannot easily see patterns over time. This creates an opportunity for mobile banking products to move beyond transaction tools toward lightweight financial insight systems.</p>
+                <p>The deeper problem is not a lack of data. The problem is a lack of meaningful synthesis. Users can become overwhelmed by raw transaction data and may benefit from automated analysis that highlights trends, anomalies, and changes in spending behavior.</p>
+            </div>
+        </section>
 
-  <!-- USER INSIGHTS (cards) -->
-  <section class="section section-alt fade-up">
-    <div class="container">
-      <div class="section-header">
-        <h2>User Insights</h2>
-        <p>Exploratory conversations with 50+ mobile banking users revealed consistent behaviors.</p>
-      </div>
-      <div class="cards-grid">
-        <div class="card"><h3>Frequent balance checks</h3><p>Users check balances several times a day, but rarely analyse transaction history.</p></div>
-        <div class="card"><h3>Mental estimates only</h3><p>Most rely on rough mental estimates rather than reviewing actual spending.</p></div>
-        <div class="card"><h3>Desire for simplicity</h3><p>Many said they would appreciate simple, automated insights if presented clearly.</p></div>
-      </div>
-    </div>
-  </section>
+        <section class="section-alt" id="problem-definition" aria-labelledby="problem-heading">
+            <div class="section-inner">
+                <div class="section-header">
+                    <p class="section-tag">Problem Definition</p>
+                    <h2 id="problem-heading">The Spending Awareness Gap</h2>
+                </div>
+                <div class="problem-grid">
+                    <div class="problem-card">
+                        <p class="problem-num">Problem 1</p>
+                        <h4>Transaction Lists Are Not Insights</h4>
+                        <p>Many mobile banking users frequently check their balance but rarely review their spending history in detail. Transaction lists can be long and difficult to interpret, making it harder to notice recurring expenses, unusual spending, or changes in behavior.</p>
+                    </div>
+                    <div class="problem-card">
+                        <p class="problem-num">Problem 2</p>
+                        <h4>Raw Data Without Context</h4>
+                        <p>Financial awareness matters for budgeting and financial stability. Yet many banking experiences prioritize showing transactions rather than helping users understand them. A lightweight insight layer could bridge that gap without overwhelming users.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-  <!-- PROBLEM ANALYSIS (two cards) + WHY THIS MATTERS (extra card?) we'll combine as two cards: problem statement, why matters -->
-  <section class="section fade-up">
-    <div class="container">
-      <div class="section-header">
-        <h2>Problem Analysis</h2>
-      </div>
-      <div class="cards-grid">
-        <div class="card">
-          <h3>Problem statement</h3>
-          <p>Many mobile banking users frequently check their balance but rarely review spending history in detail. Transaction lists are long and hard to interpret, making it difficult to notice recurring expenses or sudden changes.</p>
-        </div>
-        <div class="card">
-          <h3>Why this matters</h3>
-          <p>Financial awareness is critical for budgeting and stability. Yet most banking apps prioritise transactions over interpretation. Lightweight insights could help bridge that gap without overwhelming users.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+        <section class="section" id="user-research" aria-labelledby="research-heading">
+            <div class="section-header">
+                <p class="section-tag">User Research</p>
+                <h2 id="research-heading">What 50+ Conversations Revealed</h2>
+                <p>
+                    Exploratory conversations with mobile banking users uncovered recurring patterns in how people interact with their transaction data.
+                </p>
+            </div>
+            <div class="insight-grid">
+                <div class="insight-item">
+                    <h4>Frequent Balance Checks</h4>
+                    <p>Users check their balances several times a day but rarely analyze their transaction history in depth. The balance number provides reassurance, but not understanding.</p>
+                </div>
+                <div class="insight-item">
+                    <h4>Mental Estimates</h4>
+                    <p>Many users rely on rough mental estimates rather than reviewing actual spending patterns. This leads to surprises when the month doesn't match their internal picture.</p>
+                </div>
+                <div class="insight-item">
+                    <h4>Desire for Simplicity</h4>
+                    <p>Users expressed interest in simple, automated insights when those insights are presented clearly and without unnecessary complexity. They don't want another dashboard to manage.</p>
+                </div>
+            </div>
+            <p style="margin-top: 1.5rem; font-family: var(--font-serif); color: var(--text-tertiary); font-size: 0.9rem;">These findings are exploratory, based on 50+ conversations, not a statistically representative study.</p>
+        </section>
 
-  <!-- CONCEPT PROPOSAL (text with read more) -->
-  <section class="section section-alt fade-up">
-    <div class="container">
-      <div class="section-header">
-        <h2>Concept Proposal</h2>
-      </div>
-      <div class="text-block">
-        <p><strong>Spending Insight Layer</strong> – a lightweight addition to existing mobile banking apps that transforms transaction data into understandable patterns.</p>
-        <div id="fullProposal" class="full-content">
-          <p>The Spending Insight Layer would sit quietly in the background, analysing transaction data to produce:</p>
-          <ul style="margin-left:1.2rem; color:var(--text-mid);">
-            <li>Spending summaries (weekly / monthly)</li>
-            <li>Category breakdowns (food, transport, etc.)</li>
-            <li>Gentle alerts for unusual spending spikes</li>
-            <li>Simple behavioral observations (e.g., 'you spent 20% more on dining this month')</li>
-          </ul>
-          <p>The goal is awareness, not financial advice. Insights are always optional, never intrusive, and respect user privacy.</p>
-        </div>
-        <button class="read-more-btn" data-target="fullProposal"><i class="fas fa-chevron-right"></i> Read more</button>
-      </div>
-    </div>
-  </section>
+        <section class="section-alt" id="product-opportunity" aria-labelledby="opportunity-heading">
+            <div class="section-inner">
+                <div class="section-header">
+                    <p class="section-tag">Product Opportunity</p>
+                    <h2 id="opportunity-heading">From Visibility to Understanding</h2>
+                    <p>
+                        Move mobile banking from transaction visibility toward spending understanding.
+                    </p>
+                </div>
+                <div class="bordered-block" style="max-width: 680px;">
+                    <p>The product should not attempt to become a full financial-planning or budgeting platform. The opportunity is much narrower: help users notice meaningful changes in their spending without requiring them to manually analyze transaction histories.</p>
+                    <p>This distinction is important. The goal is awareness, not financial advice. The value comes from turning existing transaction data into useful interpretation.</p>
+                </div>
+            </div>
+        </section>
 
-  <!-- SOLUTION OVERVIEW (four cards) -->
-  <section class="section fade-up">
-    <div class="container">
-      <div class="section-header">
-        <h2>Solution Overview</h2>
-      </div>
-      <div class="cards-grid">
-        <div class="card"><h3>Auto‑categorisation</h3><p>Automatically group spending by merchant and category, with user corrections.</p></div>
-        <div class="card"><h3>Weekly summaries</h3><p>Brief push summaries of total spending vs. prior week, category shifts.</p></div>
-        <div class="card"><h3>Contextual alerts</h3><p>Detect recurring subscriptions, unusual spikes, or unused services.</p></div>
-        <div class="card"><h3>Monthly snapshot</h3><p>Income vs. spending, top categories, saving rate – one tap deep dive.</p></div>
-      </div>
-    </div>
-  </section>
+        <section class="section" id="solution-concept" aria-labelledby="solution-heading">
+            <div class="section-header">
+                <p class="section-tag">Solution Concept</p>
+                <h2 id="solution-heading">Spending Insight Layer</h2>
+                <p>
+                    A lightweight addition to existing mobile banking apps that transforms transaction data into understandable spending patterns.
+                </p>
+            </div>
+            <div class="bordered-block" style="max-width: 680px;">
+                <p>The concept would sit quietly in the background and analyze transaction data to surface useful information without requiring users to build budgets or study complicated dashboards.</p>
+                <p>Potential insight types include weekly and monthly spending summaries, category breakdowns, gentle alerts for unusual spending spikes, and simple behavioral observations. For example: "You spent 20% more on dining this month." The purpose is awareness, not financial advice.</p>
+                <p>Insights should be optional, non-intrusive, understandable, contextual, and privacy-conscious.</p>
+            </div>
+        </section>
 
-  <!-- DESIGN THINKING (text block) -->
-  <section class="section section-alt fade-up">
-    <div class="container">
-      <div class="section-header">
-        <h2>Design Thinking</h2>
-      </div>
-      <div class="text-block">
-        <p>The design follows a principle of minimal cognitive load: insights are simple, optional, and appear in context. No dashboards, no complex charts – just plain‑language observations.</p>
-        <div id="fullDesign" class="full-content">
-          <p>We started from user feedback: "I don't want to budget, I just want to know if something changed." The UI uses familiar transaction lists but highlights trends with subtle badges and short messages. Interactions are one‑tap, and users can always dismiss categories they don't care about. The system learns from manual corrections, becoming smarter over time.</p>
-          <p>All insights are generated locally or with differential privacy to maintain trust.</p>
-        </div>
-        <button class="read-more-btn" data-target="fullDesign"><i class="fas fa-chevron-right"></i> Read more</button>
-      </div>
-    </div>
-  </section>
+        <section class="section-alt" id="solution-overview" aria-labelledby="solution-overview-heading">
+            <div class="section-inner">
+                <div class="section-header">
+                    <p class="section-tag">Solution Overview</p>
+                    <h2 id="solution-overview-heading">How the Insight Layer Could Work</h2>
+                </div>
+                <div class="solution-grid">
+                    <div class="solution-card">
+                        <h4>Auto-Categorisation</h4>
+                        <p>Automatically group spending by merchant and category, while allowing users to correct classifications.</p>
+                    </div>
+                    <div class="solution-card">
+                        <h4>Weekly Summaries</h4>
+                        <p>Provide brief summaries of total spending compared with the previous week and highlight meaningful category changes.</p>
+                    </div>
+                    <div class="solution-card">
+                        <h4>Contextual Alerts</h4>
+                        <p>Identify recurring subscriptions, unusual spending spikes, or potentially unused services.</p>
+                    </div>
+                    <div class="solution-card">
+                        <h4>Monthly Snapshot</h4>
+                        <p>Show income versus spending, major categories, and saving rate, with the option to explore further.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-  <!-- IMPACT AND FUTURE POTENTIAL (text block) -->
-  <section class="section fade-up">
-    <div class="container">
-      <div class="section-header">
-        <h2>Impact & Future Potential</h2>
-      </div>
-      <div class="text-block">
-        <p>If implemented, such features could improve financial confidence and engagement. Users would feel more in control, and banking apps would become daily tools for awareness, not just payments.</p>
-        <div id="fullImpact" class="full-content">
-          <p>Potential outcomes (to be validated) include:</p>
-          <ul style="margin-left:1.2rem; color:var(--text-mid);">
-            <li>Higher user satisfaction and retention</li>
-            <li>Increased frequency of meaningful app opens</li>
-            <li>Better ability to detect unwanted subscriptions</li>
-          </ul>
-          <p>Future directions: personalised savings suggestions, financial health scores, and long‑term trend analysis. The key is to remain helpful without becoming prescriptive.</p>
-        </div>
-        <button class="read-more-btn" data-target="fullImpact"><i class="fas fa-chevron-right"></i> Read more</button>
-      </div>
-    </div>
-  </section>
+        <section class="section" id="core-experience" aria-labelledby="core-experience-heading">
+            <div class="section-header">
+                <p class="section-tag">Core Experience</p>
+                <h2 id="core-experience-heading">From Data to Awareness</h2>
+            </div>
+            <div class="bordered-block" style="max-width: 680px;">
+                <p>The proposed experience is simple: transaction data flows into pattern detection, which surfaces lightweight insights that build user awareness over time. The product should not require users to open a separate financial dashboard every day. Useful financial awareness should appear naturally within the banking experience.</p>
+            </div>
+        </section>
 
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div class="container">
-      <p>© 2026 Ayomide Ayodele. All rights reserved.</p>
-    </div>
-  </footer>
+        <section class="section-alt" id="design-principles" aria-labelledby="design-principles-heading">
+            <div class="section-inner">
+                <div class="section-header">
+                    <p class="section-tag">Design Principles</p>
+                    <h2 id="design-principles-heading">Guiding the Insight Experience</h2>
+                </div>
+                <div class="principle-grid">
+                    <div class="principle-item">
+                        <h4>Minimal Cognitive Load</h4>
+                        <p>Insights should be understandable immediately, without requiring analysis or interpretation.</p>
+                    </div>
+                    <div class="principle-item">
+                        <h4>Context Over Complexity</h4>
+                        <p>Surface useful information where users already interact with their transactions, rather than forcing them into a complicated dashboard.</p>
+                    </div>
+                    <div class="principle-item">
+                        <h4>Awareness, Not Advice</h4>
+                        <p>Help users understand their behavior without telling them what financial decisions they must make.</p>
+                    </div>
+                    <div class="principle-item">
+                        <h4>Optional and Non-Intrusive</h4>
+                        <p>Users should be able to dismiss insights or categories they do not care about.</p>
+                    </div>
+                    <div class="principle-item">
+                        <h4>Privacy-Conscious</h4>
+                        <p>Financial information is sensitive. The concept should prioritize privacy and responsible handling of transaction data.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-  <!-- MODAL (for read more) -->
-  <div class="modal-overlay" id="modalOverlay">
-    <div class="modal-content">
-      <button class="modal-close" id="modalClose">&times;</button>
-      <div class="modal-body" id="modalBody"></div>
-    </div>
-  </div>
+        <section class="section" id="trade-offs" aria-labelledby="tradeoffs-heading">
+            <div class="section-header">
+                <p class="section-tag">Product Thinking</p>
+                <h2 id="tradeoffs-heading">Key Product Trade-offs</h2>
+                <p>
+                    Design decisions that balance value with user experience.
+                </p>
+            </div>
+            <div class="tradeoff-grid">
+                <div class="tradeoff-item">
+                    <h4>Awareness vs. Overload</h4>
+                    <p>More insights do not necessarily mean more value. The product should prioritize a small number of meaningful observations rather than presenting users with endless analytics.</p>
+                </div>
+                <div class="tradeoff-item">
+                    <h4>Automation vs. User Control</h4>
+                    <p>Automated categorization and insight generation reduce effort, but users need the ability to correct or dismiss information.</p>
+                </div>
+                <div class="tradeoff-item">
+                    <h4>Personalisation vs. Privacy</h4>
+                    <p>More personalized insights require deeper use of financial data. The product must balance useful personalization with responsible data handling.</p>
+                </div>
+                <div class="tradeoff-item">
+                    <h4>Engagement vs. Intrusion</h4>
+                    <p>The product should encourage meaningful engagement without creating unnecessary notifications or anxiety around spending.</p>
+                </div>
+            </div>
+        </section>
 
-  <script>
-    (function() {
-      // FADE IN ON SCROLL
-      const fadeElements = document.querySelectorAll('.fade-up');
-      const fadeObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-          }
+        <section class="section-alt" id="user-scenarios" aria-labelledby="scenarios-heading">
+            <div class="section-inner">
+                <div class="section-header">
+                    <p class="section-tag">User Scenarios</p>
+                    <h2 id="scenarios-heading">How the Concept Could Help</h2>
+                </div>
+                <div class="scenario-grid">
+                    <div class="scenario-item">
+                        <div class="scenario-head">
+                            <p class="scenario-num">Scenario 1</p>
+                            <h4>Everyday User</h4>
+                        </div>
+                        <p>A user checks their banking app regularly but rarely reviews their complete transaction history. The product surfaces a simple weekly spending summary that helps them understand where their money has gone.</p>
+                    </div>
+                    <div class="scenario-item">
+                        <div class="scenario-head">
+                            <p class="scenario-num">Scenario 2</p>
+                            <h4>Changing Spending Patterns</h4>
+                        </div>
+                        <p>A user's dining or transportation spending increases significantly compared with their normal pattern. The system surfaces a contextual observation rather than requiring the user to manually compare transaction histories.</p>
+                    </div>
+                    <div class="scenario-item">
+                        <div class="scenario-head">
+                            <p class="scenario-num">Scenario 3</p>
+                            <h4>Subscription Awareness</h4>
+                        </div>
+                        <p>A user has recurring payments they may have forgotten about. The system identifies the pattern and surfaces it as an optional insight.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="product-positioning" aria-labelledby="positioning-heading">
+            <div class="section-header">
+                <p class="section-tag">Product Positioning</p>
+                <h2 id="positioning-heading">What This Product Is (And Isn't)</h2>
+            </div>
+            <div class="bordered-block" style="max-width: 680px;">
+                <p><strong>Not a budgeting app.</strong> Not a financial advisor. Not a complex analytics dashboard. Not a replacement for existing banking functionality.</p>
+                <p>This concept is a lightweight spending-awareness layer inside mobile banking. Its value comes from turning existing transaction data into useful interpretation.</p>
+            </div>
+        </section>
+
+        <section class="section-alt" id="potential-impact" aria-labelledby="impact-heading">
+            <div class="section-inner">
+                <div class="section-header">
+                    <p class="section-tag">Potential Impact</p>
+                    <h2 id="impact-heading">Outcomes to Validate</h2>
+                    <p>
+                        These are potential benefits, not proven results.
+                    </p>
+                </div>
+                <div class="bordered-block" style="max-width: 680px;">
+                    <ul>
+                        <li>Improve users' awareness of spending patterns</li>
+                        <li>Make transaction history easier to understand</li>
+                        <li>Help users notice unwanted subscriptions</li>
+                        <li>Encourage more meaningful engagement with their banking app</li>
+                        <li>Improve users' sense of financial control</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="validation-plan" aria-labelledby="validation-heading">
+            <div class="section-header">
+                <p class="section-tag">Validation Plan</p>
+                <h2 id="validation-heading">What Needs to Be Tested</h2>
+            </div>
+            <div class="bordered-block" style="max-width: 680px;">
+                <p>Before building or launching, these questions would need to be explored:</p>
+                <ol style="padding-left: 1.5rem; font-family: var(--font-serif); color: var(--text-secondary);">
+                    <li>Do users actually understand the insights without explanation?</li>
+                    <li>Which insight types are genuinely useful?</li>
+                    <li>How frequently should insights appear?</li>
+                    <li>Do users trust automated categorization?</li>
+                    <li>How much control do users want over categories and notifications?</li>
+                    <li>Does the feature improve financial awareness without increasing anxiety or cognitive load?</li>
+                    <li>What privacy expectations do users have around transaction analysis?</li>
+                </ol>
+            </div>
+        </section>
+
+        <section class="section-alt" id="reflection" aria-labelledby="reflection-heading">
+            <div class="section-inner">
+                <div class="section-header">
+                    <p class="section-tag">Reflection</p>
+                    <h2 id="reflection-heading">What This Concept Taught Me</h2>
+                </div>
+                <div class="bordered-block" style="max-width: 680px;">
+                    <p>The strongest opportunity is not necessarily adding more financial functionality. It is making existing financial data more understandable. The product challenge is therefore one of interpretation, prioritization, and trust rather than simply adding another dashboard.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="next-steps" aria-labelledby="next-heading">
+            <div class="section-header">
+                <p class="section-tag">Next Steps</p>
+                <h2 id="next-heading">From Concept to Validation</h2>
+            </div>
+            <div class="bordered-block" style="max-width: 680px;">
+                <ol style="padding-left: 1.5rem; font-family: var(--font-serif); color: var(--text-secondary);">
+                    <li><strong>Prototype</strong> – Design the insight experience within an existing mobile banking transaction flow.</li>
+                    <li><strong>Usability Testing</strong> – Test whether users understand the insights without additional explanation.</li>
+                    <li><strong>Insight Prioritization</strong> – Identify which categories of insight users find most valuable.</li>
+                    <li><strong>Trust and Privacy Validation</strong> – Understand users' expectations around financial-data analysis, categorization, personalization, and notifications.</li>
+                    <li><strong>Controlled Experiment</strong> – If implemented within a real banking product, test whether the insight layer improves meaningful financial awareness and engagement.</li>
+                </ol>
+            </div>
+        </section>
+    </main>
+
+    <footer class="case-footer" role="contentinfo">
+        <p class="copyright">&copy; <span id="currentYear"></span> Ayomide Ayodele. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        const body = document.body;
+        const themeToggleDesktop = document.getElementById('themeToggleDesktop');
+        const mobileThemeToggle = document.getElementById('mobileThemeToggle');
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        function getPreferredTheme() {
+            const saved = localStorage.getItem('theme');
+            if (saved === 'dark') return 'dark';
+            if (saved === 'light') return 'light';
+            if (window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark';
+            return 'light';
+        }
+
+        function applyTheme(theme) {
+            if (theme === 'dark') {
+                body.classList.add('dark-mode');
+                body.classList.remove('light-mode');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                body.classList.remove('dark-mode');
+                body.classList.add('light-mode');
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        applyTheme(getPreferredTheme());
+
+        function toggleTheme() {
+            const isDark = body.classList.contains('dark-mode');
+            applyTheme(isDark ? 'light' : 'dark');
+        }
+
+        themeToggleDesktop.addEventListener('click', toggleTheme);
+        mobileThemeToggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            toggleTheme();
         });
-      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
-      fadeElements.forEach(el => fadeObserver.observe(el));
 
-      // MODAL
-      const modalOverlay = document.getElementById('modalOverlay');
-      const modalBody = document.getElementById('modalBody');
-      const modalClose = document.getElementById('modalClose');
-
-      function showModal(contentHTML) {
-        modalBody.innerHTML = contentHTML;
-        modalOverlay.classList.add('show');
-        document.body.style.overflow = 'hidden';
-      }
-
-      function hideModal() {
-        modalOverlay.classList.remove('show');
-        document.body.style.overflow = '';
-      }
-
-      document.querySelectorAll('.read-more-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          e.preventDefault();
-          const targetId = btn.getAttribute('data-target');
-          const fullTextDiv = document.getElementById(targetId);
-          if (fullTextDiv) {
-            showModal(fullTextDiv.innerHTML);
-          }
+        hamburgerBtn.addEventListener('click', () => {
+            const expanded = hamburgerBtn.getAttribute('aria-expanded') === 'true';
+            hamburgerBtn.setAttribute('aria-expanded', !expanded);
+            mobileMenu.classList.toggle('open');
+            if (!expanded) {
+                mobileMenu.querySelector('a')?.focus();
+            }
         });
-      });
 
-      modalOverlay.addEventListener('click', (e) => {
-        if (e.target === modalOverlay) hideModal();
-      });
-      modalClose.addEventListener('click', hideModal);
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('open');
+                hamburgerBtn.setAttribute('aria-expanded', 'false');
+            });
+        });
 
-      // ensure hero visible
-      window.addEventListener('load', () => {
-        document.getElementById('hero').classList.add('visible');
-      });
-    })();
-  </script>
+        document.addEventListener('click', (e) => {
+            if (!mobileMenu.contains(e.target) && e.target !== hamburgerBtn && !hamburgerBtn.contains(e.target)) {
+                mobileMenu.classList.remove('open');
+                hamburgerBtn.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.case-nav-link');
+        const caseNav = document.getElementById('caseNav');
+
+        function updateActiveNav() {
+            if (window.innerWidth < 768) return;
+            let currentId = '';
+            const navHeight = caseNav ? caseNav.offsetHeight + 52 : 52;
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - navHeight - 20;
+                if (window.scrollY >= sectionTop) {
+                    currentId = section.getAttribute('id');
+                }
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + currentId) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updateActiveNav, { passive: true });
+        updateActiveNav();
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href');
+                const target = document.querySelector(targetId);
+                if (target) {
+                    const navHeight = caseNav ? caseNav.offsetHeight + 52 : 52;
+                    const top = target.offsetTop - navHeight;
+                    window.scrollTo({ top, behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
